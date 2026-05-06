@@ -1,57 +1,50 @@
-# Curso Corvino Acordeon MIDI
+# Curso Corvino — versão Light
 
-Curso completo pra iniciantes de acordeon — **52 aulas em 9 módulos**, do primeiro botão à primeira valsa, baião e xote.
+Versão **enxuta** do curso oficial do Corvino Acordeon MIDI: **22 aulas em 4 módulos**, do primeiro botão até a primeira valsa.
 
-🎓 Inspirado no método clássico, adaptado pro **Corvino Acordeon MIDI** — primeiro acordeon MIDI fabricado no Brasil (1,6 kg, conecta no celular/computador via USB).
+🎓 Caminho mais rápido pra quem quer começar **sem se perder no volume** — chega tocando *Minha Primeira Valsa Didática* em ~5h de estudo.
 
-## 🌐 Acesse online
+## 🌐 Acesse online (em breve)
 
-👉 **https://rafaelcorvino-lgtm.github.io/curso-corvino/**
+👉 *Em breve — após primeiro deploy.*
 
-## 📚 Estrutura do curso
+## 📚 Estrutura do curso Light
 
-### Parte I — Apresentação (Módulos 1-2)
+### Parte I — Apresentação
 - **Módulo 1:** Boas-vindas, história do acordeão, como estudar (3 aulas)
 - **Módulo 2:** Conhecendo o Corvino — anatomia, conexão, controles RC1/RC2 (5 aulas)
 
-### Parte II — Fundamentos Musicais (Módulos 3-5)
+### Parte II — Fundamentos Musicais
 - **Módulo 3:** Pauta, claves, notas, compassos, figuras de tempo, ligaduras, acidentes (8 aulas)
-- **Módulo 4:** Primeira aula básica — 5 notas MD, baixos essenciais, primeira valsa (6 aulas)
-- **Módulo 5:** Como o Corvino se expressa — articulação, timbre, fraseado (4 aulas)
+- **Módulo 4:** Primeira aula básica — 5 notas MD, baixos essenciais, **primeira valsa** (6 aulas)
 
-### Parte III — Primeiras Peças (Módulos 6-7)
-- **Módulo 6:** Minhas primeiras valsas (2 aulas, estudos didáticos)
-- **Módulo 7:** Segunda aula básica + escala, polca, marcha, xote, acordes de Fá (10 aulas)
+## 🎯 Quem é pra esse curso?
 
-### Parte IV — Repertório (Módulos 8-9)
-- **Módulo 8:** Clave de Fá + ritmos brasileiros (vanerão, baião, forró, arrasta-pé) (7 aulas)
-- **Módulo 9:** Repertório clássico — Marcha didática, Noite Feliz, Carnaval de Veneza, Olhos Negros, Asa Branca, Luar do Sertão, Mulher Rendeira (7 peças + conclusão)
+- Iniciantes absolutos que querem **chegar tocando** rápido
+- Pessoas que ainda **não decidiram** se vão investir no método completo
+- Professores que querem usar o material em workshops curtos
+
+Se quiser ir além da 1ª valsa (articulação, fraseado, escalas, ritmos brasileiros, repertório clássico), continue no **[Curso Completo](https://rafaelcorvino-lgtm.github.io/curso-corvino/)** (52 aulas, 9 módulos).
 
 ## ✨ Recursos integrados
 
-- **App Corvino embedded** via iframe — toca a partitura no acordeon digital ao lado da aula
+- **App Corvino embedded** via iframe — toca ao lado da aula
 - **Player de partitura sincronizado** com auto-scroll, count-in, BPM ajustável
-- **Pauta dupla** (clave de Sol + clave de Fá) em todas as aulas com baixos
-- **Visualização animada da mão** sobre o teclado (passagem do polegar)
-- **Painel de acessibilidade** — zoom, ocultar app, splitter arrastável (pensado pra alunos idosos)
-- **Links pra músicas reais** no Módulo 8 (Asa Branca, Eu Só Quero Um Xodó, Cai Cai Balão, etc)
+- **Modo Synthesia** — gamificado, pra praticar nota-por-nota
+- **Painel de acessibilidade** — zoom, ocultar app, splitter arrastável
 
 ## 🛠 Pra rodar local
 
 ```bash
-git clone https://github.com/rafaelcorvino-lgtm/curso-corvino.git
-cd curso-corvino
-# Abra index.html no navegador (file://) ou use um servidor estático
 python -m http.server 8000
-# Depois acesse http://localhost:8000
+# Acesse http://localhost:8000
 ```
 
-> **Nota:** os arquivos `app/assets/soundfonts/` e `app/assets/grooves/` (~500MB) **não** estão neste repositório. Pra ouvir o áudio do app, precisa baixar separado.
+> **Nota:** os arquivos `app/assets/soundfonts/` e `app/assets/grooves/` (~500MB) **não** estão neste repositório.
 
 ## 📜 Licença & créditos
 
 - **Curso e código:** © 2026 Rafael Salim Corvino
-- **Método:** original, baseado em práticas pedagógicas tradicionais de acordeon
 - **App Corvino embedded:** parte do projeto Corvino Acordeon MIDI
 
 🌐 [corvino.com.br](https://www.corvino.com.br/) · 📍 Botucatu-SP, Brasil
