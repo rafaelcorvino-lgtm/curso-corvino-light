@@ -8,228 +8,317 @@
 // tipo (cbx/fund/maj/min/white/black/empty). Highlights (active) acionados
 // pelo keyboard-input.js (físico) e embed-api.js (Synthesia da aula).
 
-const SVG_BASS_HTML = `
-<svg viewBox="0 0 280 210" class="pc-kbd-svg pc-kbd-bass" preserveAspectRatio="xMidYMid meet">
-  <!-- ====== LINHA 1: 1-4 = contrabaixos da ME ====== -->
-  <g class="pc-row pc-row-cbx">
-    <g class="pc-key" data-code="Digit1" data-kind="cbx">
+// ========================================================================
+// LAYOUT MESA — teclado na mesa, mão esquerda no baixo.
+// 3 linhas × 4 colunas (sem 7ª e sem cbx, mais compacto).
+// Linhas (cima→baixo): m · M · fund.
+// Colunas (esq→dir): Ré · Sol · Dó · Fá.
+// Defaults: m=A/S/D/F (home row); M=Q/W/E/R (top row); fund=1/2/3/4 (números).
+// Diferença pro Peito: m e fund TROCADOS de linha física no PC (Mesa põe a
+// home row no m, número row no fund; Peito faz o oposto).
+// ========================================================================
+const SVG_BASS_HTML_MESA = `
+<svg viewBox="0 0 240 162" class="pc-kbd-svg pc-kbd-bass" preserveAspectRatio="xMidYMid meet">
+  <!-- ====== LINHA 1 (TOP): m menores (defaults A S D F) ====== -->
+  <g class="pc-row pc-row-min">
+    <g class="pc-key" data-code="KeyA" data-bass-target="midi:38,row:1" data-kind="min">
       <rect x="20" y="15" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="38" y="36">1</text>
-      <text class="pc-label" x="38" y="49" data-note="Fá">Fá c.b.</text>
+      <text class="pc-letter" x="38" y="36">A</text>
+      <text class="pc-label" x="38" y="49" data-note="Ré">Ré m</text>
     </g>
-    <g class="pc-key" data-code="Digit2" data-kind="cbx">
+    <g class="pc-key" data-code="KeyS" data-bass-target="midi:43,row:1" data-kind="min">
       <rect x="60" y="15" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="36">2</text>
-      <text class="pc-label" x="78" y="49" data-note="Dó">Dó c.b.</text>
+      <text class="pc-letter" x="78" y="36">S</text>
+      <text class="pc-label" x="78" y="49" data-note="Sol">Sol m</text>
     </g>
-    <g class="pc-key" data-code="Digit3" data-kind="cbx">
+    <g class="pc-key" data-code="KeyD" data-bass-target="midi:36,row:1" data-kind="min">
       <rect x="100" y="15" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="36">3</text>
-      <text class="pc-label" x="118" y="49" data-note="Sol">Sol c.b.</text>
+      <text class="pc-letter" x="118" y="36">D</text>
+      <text class="pc-label" x="118" y="49" data-note="Dó">Dó m</text>
     </g>
-    <g class="pc-key" data-code="Digit4" data-kind="cbx">
+    <g class="pc-key" data-code="KeyF" data-bass-target="midi:41,row:1" data-kind="min">
       <rect x="140" y="15" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="158" y="36">4</text>
-      <text class="pc-label" x="158" y="49" data-note="Ré">Ré c.b.</text>
+      <text class="pc-letter" x="158" y="36">F</text>
+      <text class="pc-label" x="158" y="49" data-note="Fá">Fá m</text>
     </g>
   </g>
 
-  <!-- ====== LINHA 2: Q-R = fund ME ====== -->
-  <g class="pc-row pc-row-fund">
-    <g class="pc-key" data-code="KeyQ" data-kind="fund">
+  <!-- ====== LINHA 2 (MIDDLE): M maiores (defaults Q W E R) ====== -->
+  <g class="pc-row pc-row-maj">
+    <g class="pc-key" data-code="KeyQ" data-bass-target="midi:27,row:2" data-kind="maj">
       <rect x="40" y="63" width="36" height="40" rx="4"/>
       <text class="pc-letter" x="58" y="84">Q</text>
-      <text class="pc-label" x="58" y="97" data-note="Fá">Fá fund</text>
+      <text class="pc-label" x="58" y="97" data-note="Ré">Ré M</text>
     </g>
-    <g class="pc-key" data-code="KeyW" data-kind="fund">
+    <g class="pc-key" data-code="KeyW" data-bass-target="midi:32,row:2" data-kind="maj">
       <rect x="80" y="63" width="36" height="40" rx="4"/>
       <text class="pc-letter" x="98" y="84">W</text>
-      <text class="pc-label" x="98" y="97" data-note="Dó">Dó fund</text>
+      <text class="pc-label" x="98" y="97" data-note="Sol">Sol M</text>
     </g>
-    <g class="pc-key" data-code="KeyE" data-kind="fund">
+    <g class="pc-key" data-code="KeyE" data-bass-target="midi:25,row:2" data-kind="maj">
       <rect x="120" y="63" width="36" height="40" rx="4"/>
       <text class="pc-letter" x="138" y="84">E</text>
-      <text class="pc-label" x="138" y="97" data-note="Sol">Sol fund</text>
+      <text class="pc-label" x="138" y="97" data-note="Dó">Dó M</text>
     </g>
-    <g class="pc-key" data-code="KeyR" data-kind="fund">
+    <g class="pc-key" data-code="KeyR" data-bass-target="midi:30,row:2" data-kind="maj">
       <rect x="160" y="63" width="36" height="40" rx="4"/>
       <text class="pc-letter" x="178" y="84">R</text>
-      <text class="pc-label" x="178" y="97" data-note="Ré">Ré fund</text>
+      <text class="pc-label" x="178" y="97" data-note="Fá">Fá M</text>
     </g>
   </g>
 
-  <!-- ====== LINHA 3: A-F = M maiores ====== -->
-  <g class="pc-row pc-row-maj">
-    <g class="pc-key" data-code="KeyA" data-kind="maj">
+  <!-- ====== LINHA 3 (BOTTOM): fund baixos (defaults 1 2 3 4) ====== -->
+  <g class="pc-row pc-row-fund">
+    <g class="pc-key" data-code="Digit1" data-bass-target="midi:26,row:3" data-kind="fund">
       <rect x="60" y="111" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="132">A</text>
-      <text class="pc-label" x="78" y="145" data-note="Fá">Fá M</text>
+      <text class="pc-letter" x="78" y="132">1</text>
+      <text class="pc-label" x="78" y="145" data-note="Ré">Ré fund</text>
     </g>
-    <g class="pc-key" data-code="KeyS" data-kind="maj">
+    <g class="pc-key" data-code="Digit2" data-bass-target="midi:31,row:3" data-kind="fund">
       <rect x="100" y="111" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="132">S</text>
-      <text class="pc-label" x="118" y="145" data-note="Dó">Dó M</text>
+      <text class="pc-letter" x="118" y="132">2</text>
+      <text class="pc-label" x="118" y="145" data-note="Sol">Sol fund</text>
     </g>
-    <g class="pc-key" data-code="KeyD" data-kind="maj">
+    <g class="pc-key" data-code="Digit3" data-bass-target="midi:24,row:3" data-kind="fund">
       <rect x="140" y="111" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="158" y="132">D</text>
-      <text class="pc-label" x="158" y="145" data-note="Sol">Sol M</text>
+      <text class="pc-letter" x="158" y="132">3</text>
+      <text class="pc-label" x="158" y="145" data-note="Dó">Dó fund</text>
     </g>
-    <g class="pc-key" data-code="KeyF" data-kind="maj">
+    <g class="pc-key" data-code="Digit4" data-bass-target="midi:29,row:3" data-kind="fund">
       <rect x="180" y="111" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="198" y="132">F</text>
-      <text class="pc-label" x="198" y="145" data-note="Ré">Ré M</text>
-    </g>
-  </g>
-
-  <!-- ====== LINHA 4: Z-V = m menores ====== -->
-  <g class="pc-row pc-row-min">
-    <g class="pc-key" data-code="KeyZ" data-kind="min">
-      <rect x="80" y="159" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="98" y="180">Z</text>
-      <text class="pc-label" x="98" y="193" data-note="Fá">Fá m</text>
-    </g>
-    <g class="pc-key" data-code="KeyX" data-kind="min">
-      <rect x="120" y="159" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="138" y="180">X</text>
-      <text class="pc-label" x="138" y="193" data-note="Dó">Dó m</text>
-    </g>
-    <g class="pc-key" data-code="KeyC" data-kind="min">
-      <rect x="160" y="159" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="178" y="180">C</text>
-      <text class="pc-label" x="178" y="193" data-note="Sol">Sol m</text>
-    </g>
-    <g class="pc-key" data-code="KeyV" data-kind="min">
-      <rect x="200" y="159" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="218" y="180">V</text>
-      <text class="pc-label" x="218" y="193" data-note="Ré">Ré m</text>
+      <text class="pc-letter" x="198" y="132">4</text>
+      <text class="pc-label" x="198" y="145" data-note="Fá">Fá fund</text>
     </g>
   </g>
 </svg>
 `;
 
-const SVG_MD_HTML = `
+// ========================================================================
+// LAYOUT PEITO — teclado apoiado no peito, estilo acordeon.
+// 3 linhas × 4 colunas (sem 7ª e sem cbx, mais compacto).
+// Linhas (cima→baixo): m · M · fund.
+// Colunas (esq→dir): Ré · Sol · Dó · Fá.
+// Defaults: m=1/2/3/4 (números); M=Q/W/E/R; fund=A/S/D/F.
+// MD usa lado central do teclado (whites V B N M , . / IntlRo na bottom row,
+// blacks G H _ K L ; na home row — estilo FL Studio piano).
+// Lógica: mão esquerda fica no BAIXO (lado esquerdo do QWERTY: 1234/QWER/
+// ASDF); mão direita no TECLADO (centro/direita do QWERTY).
+// ========================================================================
+const SVG_BASS_HTML_PEITO = `
+<svg viewBox="0 0 240 162" class="pc-kbd-svg pc-kbd-bass" preserveAspectRatio="xMidYMid meet">
+  <!-- ====== LINHA 1 (TOP): m menores (defaults 1 2 3 4) ====== -->
+  <g class="pc-row pc-row-min">
+    <g class="pc-key" data-code="Digit1" data-bass-target="midi:38,row:1" data-kind="min">
+      <rect x="20" y="15" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="38" y="36">1</text>
+      <text class="pc-label" x="38" y="49" data-note="Ré">Ré m</text>
+    </g>
+    <g class="pc-key" data-code="Digit2" data-bass-target="midi:43,row:1" data-kind="min">
+      <rect x="60" y="15" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="78" y="36">2</text>
+      <text class="pc-label" x="78" y="49" data-note="Sol">Sol m</text>
+    </g>
+    <g class="pc-key" data-code="Digit3" data-bass-target="midi:36,row:1" data-kind="min">
+      <rect x="100" y="15" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="118" y="36">3</text>
+      <text class="pc-label" x="118" y="49" data-note="Dó">Dó m</text>
+    </g>
+    <g class="pc-key" data-code="Digit4" data-bass-target="midi:41,row:1" data-kind="min">
+      <rect x="140" y="15" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="158" y="36">4</text>
+      <text class="pc-label" x="158" y="49" data-note="Fá">Fá m</text>
+    </g>
+  </g>
+
+  <!-- ====== LINHA 2 (MIDDLE): M maiores (defaults Q W E R) ====== -->
+  <g class="pc-row pc-row-maj">
+    <g class="pc-key" data-code="KeyQ" data-bass-target="midi:27,row:2" data-kind="maj">
+      <rect x="40" y="63" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="58" y="84">Q</text>
+      <text class="pc-label" x="58" y="97" data-note="Ré">Ré M</text>
+    </g>
+    <g class="pc-key" data-code="KeyW" data-bass-target="midi:32,row:2" data-kind="maj">
+      <rect x="80" y="63" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="98" y="84">W</text>
+      <text class="pc-label" x="98" y="97" data-note="Sol">Sol M</text>
+    </g>
+    <g class="pc-key" data-code="KeyE" data-bass-target="midi:25,row:2" data-kind="maj">
+      <rect x="120" y="63" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="138" y="84">E</text>
+      <text class="pc-label" x="138" y="97" data-note="Dó">Dó M</text>
+    </g>
+    <g class="pc-key" data-code="KeyR" data-bass-target="midi:30,row:2" data-kind="maj">
+      <rect x="160" y="63" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="178" y="84">R</text>
+      <text class="pc-label" x="178" y="97" data-note="Fá">Fá M</text>
+    </g>
+  </g>
+
+  <!-- ====== LINHA 3 (BOTTOM): fund baixos (defaults A S D F) ====== -->
+  <g class="pc-row pc-row-fund">
+    <g class="pc-key" data-code="KeyA" data-bass-target="midi:26,row:3" data-kind="fund">
+      <rect x="60" y="111" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="78" y="132">A</text>
+      <text class="pc-label" x="78" y="145" data-note="Ré">Ré fund</text>
+    </g>
+    <g class="pc-key" data-code="KeyS" data-bass-target="midi:31,row:3" data-kind="fund">
+      <rect x="100" y="111" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="118" y="132">S</text>
+      <text class="pc-label" x="118" y="145" data-note="Sol">Sol fund</text>
+    </g>
+    <g class="pc-key" data-code="KeyD" data-bass-target="midi:24,row:3" data-kind="fund">
+      <rect x="140" y="111" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="158" y="132">D</text>
+      <text class="pc-label" x="158" y="145" data-note="Dó">Dó fund</text>
+    </g>
+    <g class="pc-key" data-code="KeyF" data-bass-target="midi:29,row:3" data-kind="fund">
+      <rect x="180" y="111" width="36" height="40" rx="4"/>
+      <text class="pc-letter" x="198" y="132">F</text>
+      <text class="pc-label" x="198" y="145" data-note="Fá">Fá fund</text>
+    </g>
+  </g>
+</svg>
+`;
+
+// Estado atual do layout do baixo. Persistido em localStorage.
+const BASS_LAYOUT_KEY = 'corvino:bassLayout';
+let currentBassLayout = 'mesa'; // 'mesa' | 'peito'
+try {
+  const saved = localStorage.getItem(BASS_LAYOUT_KEY);
+  if (saved === 'mesa' || saved === 'peito') currentBassLayout = saved;
+} catch (e) { /* localStorage indisponível */ }
+
+function getBassSVG() {
+  return currentBassLayout === 'peito' ? SVG_BASS_HTML_PEITO : SVG_BASS_HTML_MESA;
+}
+
+// (SVG_MD_HTML_MESA declarado abaixo, depois de SVG_MD_HTML_PEITO — MD é
+// unificado entre os dois layouts, então MESA aponta pro mesmo SVG do PEITO.)
+
+// ========================================================================
+// LAYOUT PEITO — MD piano (mão direita usa centro/direita do teclado).
+// Whites: V B N M , . / IntlRo (bottom row, posições 4-11)
+// Blacks: G H _ K L ; (home row em cima, posições 5,6,8,9,10 — gaps Mi-Fá e Si-Dó)
+// IntlRo é a tecla extra de teclado BR ABNT2 (entre Right Shift e L) com /?.
+// ========================================================================
+const SVG_MD_HTML_PEITO = `
 <svg viewBox="0 0 340 105" class="pc-kbd-svg pc-kbd-md" preserveAspectRatio="xMidYMid meet">
-  <!-- ====== LINHA SUPERIOR (pretas): Y U O P [ ====== -->
+  <!-- ====== LINHA SUPERIOR (pretas): G H _ K L ; ====== -->
   <g class="pc-row pc-row-black">
-    <g class="pc-key pc-empty" data-kind="empty"><rect x="20" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="38" y="35">T</text></g>
-    <g class="pc-key" data-code="KeyY" data-kind="black">
+    <g class="pc-key pc-empty" data-kind="empty"><rect x="20" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="38" y="35">F</text></g>
+    <g class="pc-key" data-code="KeyG" data-kind="black">
       <rect x="60" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="31">Y</text>
+      <text class="pc-letter" x="78" y="31">G</text>
       <text class="pc-label" x="78" y="44" data-note="Dó">Dó♯</text>
     </g>
-    <g class="pc-key" data-code="KeyU" data-kind="black">
+    <g class="pc-key" data-code="KeyH" data-kind="black">
       <rect x="100" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="31">U</text>
+      <text class="pc-letter" x="118" y="31">H</text>
       <text class="pc-label" x="118" y="44" data-note="Ré">Ré♯</text>
     </g>
-    <g class="pc-key pc-empty" data-kind="empty"><rect x="140" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="158" y="35">I</text></g>
-    <g class="pc-key" data-code="KeyO" data-kind="black">
+    <g class="pc-key pc-empty" data-kind="empty"><rect x="140" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="158" y="35">J</text></g>
+    <g class="pc-key" data-code="KeyK" data-kind="black">
       <rect x="180" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="198" y="31">O</text>
+      <text class="pc-letter" x="198" y="31">K</text>
       <text class="pc-label" x="198" y="44" data-note="Fá">Fá♯</text>
     </g>
-    <g class="pc-key" data-code="KeyP" data-kind="black">
+    <g class="pc-key" data-code="KeyL" data-kind="black">
       <rect x="220" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="238" y="31">P</text>
+      <text class="pc-letter" x="238" y="31">L</text>
       <text class="pc-label" x="238" y="44" data-note="Sol">Sol♯</text>
     </g>
-    <g class="pc-key" data-code="BracketLeft" data-kind="black">
+    <g class="pc-key" data-code="Semicolon" data-kind="black">
       <rect x="260" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="278" y="31">[</text>
+      <text class="pc-letter" x="278" y="31">Ç</text>
       <text class="pc-label" x="278" y="44" data-note="Lá">Lá♯</text>
     </g>
   </g>
 
-  <!-- ====== LINHA INFERIOR (brancas): G H J K L Ç ~ ] ====== -->
+  <!-- ====== LINHA INFERIOR (brancas): V B N M , . / IntlRo ====== -->
   <g class="pc-row pc-row-white">
-    <g class="pc-key" data-code="KeyG" data-kind="white">
+    <g class="pc-key" data-code="KeyV" data-kind="white">
       <rect x="20" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="38" y="79">G</text>
+      <text class="pc-letter" x="38" y="79">V</text>
       <text class="pc-label" x="38" y="92" data-note="Dó">Dó</text>
     </g>
-    <g class="pc-key" data-code="KeyH" data-kind="white">
+    <g class="pc-key" data-code="KeyB" data-kind="white">
       <rect x="60" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="79">H</text>
+      <text class="pc-letter" x="78" y="79">B</text>
       <text class="pc-label" x="78" y="92" data-note="Ré">Ré</text>
     </g>
-    <g class="pc-key" data-code="KeyJ" data-kind="white">
+    <g class="pc-key" data-code="KeyN" data-kind="white">
       <rect x="100" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="79">J</text>
+      <text class="pc-letter" x="118" y="79">N</text>
       <text class="pc-label" x="118" y="92" data-note="Mi">Mi</text>
     </g>
-    <g class="pc-key" data-code="KeyK" data-kind="white">
+    <g class="pc-key" data-code="KeyM" data-kind="white">
       <rect x="140" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="158" y="79">K</text>
+      <text class="pc-letter" x="158" y="79">M</text>
       <text class="pc-label" x="158" y="92" data-note="Fá">Fá</text>
     </g>
-    <g class="pc-key" data-code="KeyL" data-kind="white">
+    <g class="pc-key" data-code="Comma" data-kind="white">
       <rect x="180" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="198" y="79">L</text>
+      <text class="pc-letter" x="198" y="79">,</text>
       <text class="pc-label" x="198" y="92" data-note="Sol">Sol</text>
     </g>
-    <g class="pc-key" data-code="Semicolon" data-kind="white">
+    <g class="pc-key" data-code="Period" data-kind="white">
       <rect x="220" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="238" y="79">Ç</text>
+      <text class="pc-letter" x="238" y="79">.</text>
       <text class="pc-label" x="238" y="92" data-note="Lá">Lá</text>
     </g>
-    <g class="pc-key" data-code="Quote" data-kind="white">
+    <g class="pc-key" data-code="Slash" data-kind="white">
       <rect x="260" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="278" y="79">~</text>
+      <text class="pc-letter" x="278" y="79">;</text>
       <text class="pc-label" x="278" y="92" data-note="Si">Si</text>
     </g>
-    <g class="pc-key" data-code="Backslash" data-kind="white">
+    <g class="pc-key" data-code="IntlRo" data-kind="white">
       <rect x="300" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="318" y="79">]</text>
+      <text class="pc-letter" x="318" y="79">/</text>
       <text class="pc-label" x="318" y="92" data-note="Dó">Dó(8va)</text>
     </g>
   </g>
 </svg>
 `;
 
+// MD unificado: Mesa e Peito usam exatamente as mesmas teclas da mão direita.
+const SVG_MD_HTML_MESA = SVG_MD_HTML_PEITO;
+
+function getMdSVG() {
+  return currentBassLayout === 'peito' ? SVG_MD_HTML_PEITO : SVG_MD_HTML_MESA;
+}
+
 // Cache de cada elemento .pc-key por code (lookup O(1)) — agnóstico de SVG
 const keyByCode = new Map();
+// Cache de cada elemento .pc-key bass por bass-target string ("midi:X,row:Y").
+// Permite remap por (midi, row) sem depender de KEY_MAP do PC — necessário
+// pras 4 colunas novas (Fá#, Si, Mi, Lá) que não têm default code.
+const targetToEl = new Map();
 
-// MIDI mapping para click/touch direto nas teclas SVG. Espelha exatamente
-// o KEY_MAP do keyboard-input.js — assim clicar na tecla virtual produz
-// o mesmo som que apertar a tecla física correspondente no PC.
-const CODE_TO_NOTE = {
-  // MD brancas
-  KeyG: { midi: 48, isBass: false },
-  KeyH: { midi: 50, isBass: false },
-  KeyJ: { midi: 52, isBass: false },
-  KeyK: { midi: 53, isBass: false },
-  KeyL: { midi: 55, isBass: false },
-  Semicolon: { midi: 57, isBass: false },
-  Quote: { midi: 59, isBass: false },
-  Backslash: { midi: 60, isBass: false },
-  // MD pretas
-  KeyY: { midi: 49, isBass: false },
-  KeyU: { midi: 51, isBass: false },
-  KeyO: { midi: 54, isBass: false },
-  KeyP: { midi: 56, isBass: false },
-  BracketLeft: { midi: 58, isBass: false },
-  // ME contrabaixos
-  Digit1: { midi: 33, isBass: true },
-  Digit2: { midi: 28, isBass: true },
-  Digit3: { midi: 35, isBass: true },
-  Digit4: { midi: 54, isBass: true },
-  // ME fundamentais
-  KeyQ: { midi: 29, isBass: true },
-  KeyW: { midi: 24, isBass: true },
-  KeyE: { midi: 31, isBass: true },
-  KeyR: { midi: 26, isBass: true },
-  // ME maiores
-  KeyA: { midi: 30, isBass: true },
-  KeyS: { midi: 25, isBass: true },
-  KeyD: { midi: 32, isBass: true },
-  KeyF: { midi: 27, isBass: true },
-  // ME menores
-  KeyZ: { midi: 41, isBass: true },
-  KeyX: { midi: 36, isBass: true },
-  KeyC: { midi: 43, isBass: true },
-  KeyV: { midi: 38, isBass: true },
+// MIDI mapping para click/touch direto nas teclas MD do SVG.
+// (Baixos usam data-bass-target em vez deste mapa.)
+// MD unificado: Mesa e Peito usam o mesmo MD, então CODE_TO_NOTE_MESA
+// aponta pro CODE_TO_NOTE_PEITO (declarado logo abaixo).
+const CODE_TO_NOTE_PEITO = {
+  // MD brancas (Peito: V B N M , . / IntlRo) — Dó-Dó8va
+  KeyV:    { midi: 48, isBass: false }, // Dó
+  KeyB:    { midi: 50, isBass: false }, // Ré
+  KeyN:    { midi: 52, isBass: false }, // Mi
+  KeyM:    { midi: 53, isBass: false }, // Fá
+  Comma:   { midi: 55, isBass: false }, // Sol
+  Period:  { midi: 57, isBass: false }, // Lá
+  Slash:   { midi: 59, isBass: false }, // Si
+  IntlRo:  { midi: 60, isBass: false }, // Dó(8va) — tecla extra BR ABNT2
+  // MD pretas (Peito: G H _ K L ;)
+  KeyG:      { midi: 49, isBass: false }, // Dó#
+  KeyH:      { midi: 51, isBass: false }, // Ré#
+  KeyK:      { midi: 54, isBass: false }, // Fá#
+  KeyL:      { midi: 56, isBass: false }, // Sol#
+  Semicolon: { midi: 58, isBass: false }, // Lá#
 };
+const CODE_TO_NOTE_MESA = CODE_TO_NOTE_PEITO; // MD idêntico entre layouts
+function getCodeToNote() {
+  return currentBassLayout === 'peito' ? CODE_TO_NOTE_PEITO : CODE_TO_NOTE_MESA;
+}
 
 let _audio = null;
 let _state = null;
@@ -238,34 +327,94 @@ export function init({ audio, state } = {}) {
   _audio = audio;
   _state = state;
 
-  // Insere SVG do baixo dentro do #pc-bass-section (filho do #bass-section)
+  // Aplica classe no <body> pro CSS conhecer o layout atual (aspect-ratio)
+  applyLayoutBodyClass();
+
+  // Renderiza ambas as seções (baixo e MD) conforme layout atual
+  renderBassSection();
+  renderMdSection();
+}
+
+// Põe class .bass-peito ou .bass-mesa no <body> pro CSS poder ajustar
+// aspect-ratio do SVG (Peito tem 3 linhas, Mesa tem 4 — proporções diferentes).
+function applyLayoutBodyClass() {
+  document.body.classList.remove('bass-mesa', 'bass-peito');
+  document.body.classList.add(`bass-${currentBassLayout}`);
+}
+
+// (Re)renderiza só o #pc-bass-section, usando o SVG do layout corrente.
+// Limpa caches de baixo (keyByCode entries do baixo + targetToEl) antes,
+// pra não vazar referências do layout antigo.
+function renderBassSection() {
   const bassContainer = document.getElementById('pc-bass-section');
-  if (bassContainer) {
-    bassContainer.innerHTML = SVG_BASS_HTML;
-    bassContainer.querySelectorAll('.pc-key[data-code]').forEach(el => {
-      keyByCode.set(el.dataset.code, el);
-    });
-    if (_audio) attachPointerHandlers(bassContainer);
+  if (!bassContainer) return;
+
+  // Limpa entradas de baixo do keyByCode (mantém as MD intactas)
+  for (const [code, el] of keyByCode) {
+    if (el && el.closest && el.closest('#pc-bass-section')) keyByCode.delete(code);
+  }
+  targetToEl.clear();
+
+  bassContainer.innerHTML = getBassSVG();
+
+  bassContainer.querySelectorAll('.pc-key[data-code]').forEach(el => {
+    el.dataset.originalCode = el.dataset.code;
+    keyByCode.set(el.dataset.code, el);
+  });
+  bassContainer.querySelectorAll('.pc-key[data-bass-target]').forEach(el => {
+    targetToEl.set(el.dataset.bassTarget, el);
+  });
+  if (_audio) attachPointerHandlers(bassContainer);
+}
+
+// (Re)renderiza só o #pc-md-section, usando o SVG MD do layout corrente.
+// Limpa entradas de MD do keyByCode antes (mantém baixo intacto).
+function renderMdSection() {
+  const mdContainer = document.getElementById('pc-md-section');
+  if (!mdContainer) return;
+
+  for (const [code, el] of keyByCode) {
+    if (el && el.closest && el.closest('#pc-md-section')) keyByCode.delete(code);
   }
 
-  // Insere SVG do teclado dentro do #pc-md-section (filho do #piano-section)
-  const mdContainer = document.getElementById('pc-md-section');
-  if (mdContainer) {
-    mdContainer.innerHTML = SVG_MD_HTML;
-    mdContainer.querySelectorAll('.pc-key[data-code]').forEach(el => {
-      keyByCode.set(el.dataset.code, el);
-    });
-    if (_audio) attachPointerHandlers(mdContainer);
-  }
+  mdContainer.innerHTML = getMdSVG();
+  mdContainer.querySelectorAll('.pc-key[data-code]').forEach(el => {
+    el.dataset.originalCode = el.dataset.code;
+    keyByCode.set(el.dataset.code, el);
+  });
+  if (_audio) attachPointerHandlers(mdContainer);
 }
+
+// Troca o layout (Mesa <-> Peito). Re-renderiza ambas as seções (bass + MD)
+// porque o Peito tem layout diferente em ambas. Persiste em localStorage.
+export function setBassLayout(layout) {
+  if (layout !== 'mesa' && layout !== 'peito') return;
+  if (layout === currentBassLayout) return;
+  currentBassLayout = layout;
+  try { localStorage.setItem(BASS_LAYOUT_KEY, layout); } catch (e) {}
+  applyLayoutBodyClass();
+  renderBassSection();
+  renderMdSection();
+}
+
+export function getBassLayout() { return currentBassLayout; }
 
 function attachPointerHandlers(container) {
   const activePointers = new Map();
 
   function press(el, pointerId) {
     if (!el) return;
-    const code = el.dataset.code;
-    const note = CODE_TO_NOTE[code];
+    let note = null;
+    // Prioridade 1: bass-target (cobre as 32 teclas de baixo, mesmo as
+    // 4 colunas novas Fá#/Si/Mi/Lá que não têm default code)
+    if (el.dataset.bassTarget) {
+      const m = el.dataset.bassTarget.match(/^midi:(-?\d+),row:(\d+)$/);
+      if (m) note = { midi: +m[1], isBass: true };
+    } else {
+      // Prioridade 2: data-code (teclas MD; layout-aware)
+      const code = el.dataset.code;
+      note = getCodeToNote()[code];
+    }
     if (!note) return;
     el.classList.add('active');
     activePointers.set(pointerId, { el, note });
@@ -289,8 +438,11 @@ function attachPointerHandlers(container) {
   }
 
   container.addEventListener('pointerdown', e => {
-    const el = e.target.closest('.pc-key[data-code]');
+    // Aceita .pc-key com data-code (default) OU data-bass-target (novas
+    // colunas de baixo Fá#/Si/Mi/Lá sem default — clicáveis via bass-target).
+    const el = e.target.closest('.pc-key[data-code], .pc-key[data-bass-target]');
     if (!el) return;
+    if (el.classList.contains('pc-empty')) return;
     e.preventDefault();
     el.setPointerCapture?.(e.pointerId);
     press(el, e.pointerId);
@@ -342,40 +494,175 @@ const NAME_TO_IDX = {
   'Dó':0, 'Dó♯':1, 'Ré':2, 'Ré♯':3, 'Mi':4, 'Fá':5, 'Fá♯':6,
   'Sol':7, 'Sol♯':8, 'Lá':9, 'Lá♯':10, 'Si':11,
 };
+// MD keys: keyed por event.code (estáveis pq teclas MD não viram do nada)
 const BASE_NOTE = {
-  Digit1: 'Fá', KeyQ: 'Fá', KeyA: 'Fá', KeyZ: 'Fá',
-  Digit2: 'Dó', KeyW: 'Dó', KeyS: 'Dó', KeyX: 'Dó',
-  Digit3: 'Sol', KeyE: 'Sol', KeyD: 'Sol', KeyC: 'Sol',
-  Digit4: 'Ré', KeyR: 'Ré', KeyF: 'Ré', KeyV: 'Ré',
   KeyG: 'Dó', KeyH: 'Ré', KeyJ: 'Mi', KeyK: 'Fá',
   KeyL: 'Sol', Semicolon: 'Lá', Quote: 'Si', Backslash: 'Dó',
   KeyY: 'Dó♯', KeyU: 'Ré♯', KeyO: 'Fá♯', KeyP: 'Sol♯', BracketLeft: 'Lá♯',
 };
+// Bass keys: keyed por bass-target ("midi:X,row:Y") — funciona pras 40
+// teclas (8 colunas × 5 linhas) inclusive as novas Fá#/Si/Mi/Lá que não
+// têm default code. Mantém o nome base estável independente de remap.
+const BASE_NOTE_BY_TARGET = {
+  // cbx (row 4) — labels igual app Acordeon: pitches REAIS, com correção +1 em midi 55
+  'midi:20,row:4': 'Sol♯', 'midi:51,row:4': 'Ré♯', 'midi:55,row:4': 'Sol♯', 'midi:49,row:4': 'Dó♯',
+  'midi:54,row:4': 'Fá♯',  'midi:35,row:4': 'Si',  'midi:28,row:4': 'Mi',   'midi:33,row:4': 'Lá',
+  // fund (row 3)
+  'midi:54,row:3': 'Fá♯', 'midi:35,row:3': 'Si',  'midi:28,row:3': 'Mi',  'midi:33,row:3': 'Lá',
+  'midi:26,row:3': 'Ré',  'midi:31,row:3': 'Sol', 'midi:24,row:3': 'Dó',  'midi:29,row:3': 'Fá',
+  // maj (row 2)
+  'midi:23,row:2': 'Fá♯', 'midi:50,row:2': 'Si',  'midi:48,row:2': 'Mi',  'midi:34,row:2': 'Lá',
+  'midi:27,row:2': 'Ré',  'midi:32,row:2': 'Sol', 'midi:25,row:2': 'Dó',  'midi:30,row:2': 'Fá',
+  // min (row 1)
+  'midi:22,row:1': 'Fá♯', 'midi:47,row:1': 'Si',  'midi:40,row:1': 'Mi',  'midi:45,row:1': 'Lá',
+  'midi:38,row:1': 'Ré',  'midi:43,row:1': 'Sol', 'midi:36,row:1': 'Dó',  'midi:41,row:1': 'Fá',
+  // 7ª acordes (row 0)
+  'midi:21,row:0': 'Fá♯', 'midi:52,row:0': 'Si',  'midi:53,row:0': 'Mi',  'midi:46,row:0': 'Lá',
+  'midi:39,row:0': 'Ré',  'midi:44,row:0': 'Sol', 'midi:37,row:0': 'Dó',  'midi:42,row:0': 'Fá',
+};
 const KIND_IS_BASS = { cbx: true, fund: true, maj: true, min: true };
 
+function applyTranspose(el, baseName, transpose) {
+  const kind = el.dataset.kind;
+  const baseIdx = NAME_TO_IDX[baseName];
+  if (baseIdx === undefined) return;
+  const newIdx = (((baseIdx + transpose) % 12) + 12) % 12;
+  const noteName = NOTE_NAMES[newIdx];
+  const labelEl = el.querySelector('.pc-label');
+  if (!labelEl) return;
+  const printable = noteName.replace('♯', '#');
+  let label;
+  switch (kind) {
+    case 'cbx':   label = printable + ' c.b.'; break;
+    case 'fund':  label = printable + ' fund'; break;
+    case 'maj':   label = printable + ' M'; break;
+    case 'min':   label = printable + ' m'; break;
+    case 'set':   label = printable + ' 7'; break;
+    case 'white':
+    case 'black': label = noteName; break;
+    default: return;
+  }
+  labelEl.textContent = label;
+  labelEl.setAttribute('data-note', noteName.replace(/♯/g, ''));
+}
+
 export function refreshLabels({ kbTranspose = 0, bassTranspose = 0 } = {}) {
+  // Bass keys: itera TODAS as 32 teclas via bass-target (cobre defaults
+  // E as 4 colunas novas Fá#/Si/Mi/Lá)
+  document.querySelectorAll('.pc-key[data-bass-target]').forEach(el => {
+    const baseName = BASE_NOTE_BY_TARGET[el.dataset.bassTarget];
+    if (!baseName) return;
+    applyTranspose(el, baseName, bassTranspose);
+  });
+  // MD keys: keyByCode (que excluem as bass)
   keyByCode.forEach((el, code) => {
+    if (el.dataset.bassTarget) return; // já tratada acima
     const baseName = BASE_NOTE[code];
     if (!baseName) return;
-    const kind = el.dataset.kind;
-    const tr = KIND_IS_BASS[kind] ? bassTranspose : kbTranspose;
-    const baseIdx = NAME_TO_IDX[baseName];
-    const newIdx = (((baseIdx + tr) % 12) + 12) % 12;
-    const noteName = NOTE_NAMES[newIdx];
-    const labelEl = el.querySelector('.pc-label');
-    if (!labelEl) return;
-    const printable = noteName.replace('♯', '#');
-    let label;
-    switch (kind) {
-      case 'cbx':   label = printable + ' c.b.'; break;
-      case 'fund':  label = printable + ' fund'; break;
-      case 'maj':   label = printable + ' M'; break;
-      case 'min':   label = printable + ' m'; break;
-      case 'white':
-      case 'black': label = noteName; break;
-      default: return;
-    }
-    labelEl.textContent = label;
-    labelEl.setAttribute('data-note', noteName.replace(/♯/g, ''));
+    applyTranspose(el, baseName, kbTranspose);
   });
+}
+
+// ===== Suporte ao editor de teclas (kbd-editor.js) =====
+// Mapeia letra exibida na tecla a partir do event.code. Cobre o teclado
+// inteiro pra que reatribuições mostrem letras corretas (ex: code "KeyZ"
+// vira letra "Z", code "Digit5" vira "5", etc).
+function codeToDisplayLetter(code) {
+  if (code.startsWith('Key')) return code.slice(3);     // KeyZ → Z
+  if (code.startsWith('Digit')) return code.slice(5);   // Digit5 → 5
+  switch (code) {
+    case 'Semicolon':    return 'Ç';
+    case 'Quote':        return '~';
+    case 'Backslash':
+    case 'BracketRight': return ']';
+    case 'BracketLeft':  return '[';
+    case 'Comma':        return ',';
+    case 'Period':       return '.';
+    case 'Slash':        return '/';
+    case 'Minus':        return '-';
+    case 'Equal':        return '=';
+    case 'Backquote':    return '`';
+    default: return code; // fallback: mostra o code completo
+  }
+}
+
+// Volta TODAS as teclas pro mapeamento original. Inclui:
+//   1. Teclas DEFAULT: data-code volta a ser data-original-code
+//   2. Teclas SEM DEFAULT (cols 1-4 novas de baixo): data-code é removido
+//      e o pc-letter (criado dinamicamente) é deletado
+// Usado pelo editor quando aluno aperta "Restaurar padrão".
+export function resetCodes() {
+  keyByCode.clear();
+  // 1. Defaults
+  document.querySelectorAll('.pc-key[data-original-code]').forEach(el => {
+    const original = el.dataset.originalCode;
+    el.dataset.code = original;
+    const letterEl = el.querySelector('.pc-letter');
+    if (letterEl) letterEl.textContent = codeToDisplayLetter(original);
+    keyByCode.set(original, el);
+  });
+  // 2. Não-defaults (Fá#, Si, Mi, Lá): tira data-code + remove letter dinâmico
+  document.querySelectorAll('.pc-key[data-bass-target]:not([data-original-code])').forEach(el => {
+    if (el.dataset.code) delete el.dataset.code;
+    const letterEl = el.querySelector('.pc-letter');
+    if (letterEl) letterEl.remove();
+  });
+}
+
+// Re-mapeia uma tecla: a função (midi/baixo) que estava em `originalCode`
+// passa a responder por `newCode`. Atualiza data-code da pc-key + texto
+// da letra + Map keyByCode.
+export function remapCode(originalCode, newCode) {
+  // Acha o elemento cuja função original era `originalCode`
+  const el = document.querySelector(`.pc-key[data-original-code="${originalCode}"]`);
+  if (!el) return;
+  // Tira do Map sob o code antigo
+  const oldCode = el.dataset.code;
+  if (oldCode && keyByCode.get(oldCode) === el) keyByCode.delete(oldCode);
+  // Atualiza data-code + label visual
+  el.dataset.code = newCode;
+  const letterEl = el.querySelector('.pc-letter');
+  if (letterEl) letterEl.textContent = codeToDisplayLetter(newCode);
+  keyByCode.set(newCode, el);
+}
+
+// Re-mapeia uma tecla de BAIXO identificada por (midi, row), independente
+// de ter default no KEY_MAP do PC. Funciona pras 32 teclas de baixo do SVG.
+// Cria pc-letter dinamicamente quando necessário (cols Fá#/Si/Mi/Lá).
+export function remapByTarget(target, newCode) {
+  const tk = `midi:${target.midi},row:${target.row || 0}`;
+  const el = targetToEl.get(tk);
+  if (!el) return;
+  // Tira do keyByCode sob o code antigo
+  const oldCode = el.dataset.code;
+  if (oldCode && keyByCode.get(oldCode) === el) keyByCode.delete(oldCode);
+  // Atualiza data-code
+  if (newCode) {
+    el.dataset.code = newCode;
+    keyByCode.set(newCode, el);
+  } else {
+    delete el.dataset.code;
+  }
+  // Cria/atualiza/remove pc-letter
+  let letterEl = el.querySelector('.pc-letter');
+  if (newCode) {
+    if (!letterEl) {
+      // Cria <text class="pc-letter"> centralizado em cima do label
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const rect = el.querySelector('rect');
+      const labelEl = el.querySelector('.pc-label');
+      const x = parseFloat(rect.getAttribute('x')) + parseFloat(rect.getAttribute('width')) / 2;
+      const yLetter = parseFloat(rect.getAttribute('y')) + 21; // mesmo offset que defaults
+      letterEl = document.createElementNS(SVG_NS, 'text');
+      letterEl.setAttribute('class', 'pc-letter');
+      letterEl.setAttribute('x', x);
+      letterEl.setAttribute('y', yLetter);
+      // Insere ANTES do label pra ordem visual ficar igual aos defaults
+      el.insertBefore(letterEl, labelEl);
+    }
+    letterEl.textContent = codeToDisplayLetter(newCode);
+  } else if (letterEl && !el.dataset.originalCode) {
+    // Só remove o letter se NÃO for tecla default (defaults sempre mantêm letra)
+    letterEl.remove();
+  }
 }

@@ -252,8 +252,8 @@
         a melodia simples com mínimas pontuadas, a <em>variação</em> (compassos 9 a 16) traz a mesma ideia
         com mais movimento (semínima + mínima), e a <em>recapitulação</em> (compassos 17 a 24) retoma o tema
         e fecha a peça. Usa também
-        os acordes de <strong>Fá</strong> e <strong>Sol7</strong> — então pode estudar essa partitura
-        depois das aulas 35 (Fá) e 38 (Sol7), ou tentar agora como motivação.
+        os acordes de <strong>Fá</strong> e <strong>Sol</strong> — então pode estudar essa partitura
+        depois das aulas 35 (Fá) e 38 (Sol), ou tentar agora como motivação.
       </div>
 
       <figure class="score-figure">
@@ -653,9 +653,9 @@
           <strong>Valsa do Corvino — composição original com forma A-B-A.</strong>
           Usa <strong>só 5 notas</strong> (Dó-Ré-Mi-Fá-Sol — 1ª posição da mão direita),
           ideal pra fixar o dedilhado básico antes de expandir o alcance.
-          <em>Tema</em> (compassos 1 a 8): melodia simples Dó-Mi-Sol-Mi | Sol-Fá-Mi-Dó com 1 mínima pontuada por compasso, ME alterna Dó↔Sol7.
+          <em>Tema</em> (compassos 1 a 8): melodia simples Dó-Mi-Sol-Mi | Sol-Fá-Mi-Dó com 1 mínima pontuada por compasso, ME alterna Dó↔Sol.
           <em>Variação</em> (compassos 9 a 16): mesma ideia melódica mas com semínima + mínima por compasso, dando movimento.
-          <em>Recapitulação</em> (compassos 17 a 24): volta ao tema nos primeiros 4 compassos e fecha com cadência <strong>IV-V-I</strong> (Fá-Sol7-Dó) — o "fim oficial" de uma valsa clássica.
+          <em>Recapitulação</em> (compassos 17 a 24): volta ao tema nos primeiros 4 compassos e fecha com cadência <strong>IV-V-I</strong> (Fá-Sol-Dó) — o "fim oficial" de uma valsa clássica.
         </figcaption>
         <!-- Botão Synthesia: synthesia.js cria a toolbar com este botão
              + toggles MD/ME (claves) + BPM ajustável. Substitui Lento/Normal
@@ -773,8 +773,9 @@
   <script type="module">
     import { attachScorePlayer } from './js/score-player.js';
     const MEL=0.95, SUST=0.85, STAC=0.28;
-    // MIDIs MD: Mi=64, Sol=67, Ré=62, Dó central=60
-    // ME (Stradella): Dó=24, DóM=25, Sol=31, SolM=32, Sol7=44
+    // MIDIs MD (convenção do curso: Dó central = midi 48):
+    //   Dó=48, Ré=50, Mi=52, Fá=53, Sol=55
+    // ME (Stradella): Dó=24, DóM=25, Sol=31, SolM=32
 
     // Sequência Mi-Sol-Mi-Dó | Sol-Mi-Ré-Dó (forma A-B)
     const md = [
@@ -825,21 +826,21 @@
     // ============================================================
     // ============ Valsa do Corvino (24 compassos, A-B-A) =====
     // ============================================================
-    // MIDIs MD (oitava 4 — cabe nas 25 teclas do Corvino, MIDI 48-72):
-    //   Dó4=60, Ré4=62, Mi4=64, Fá4=65, Sol4=67  (só 5 notas — 1ª posição Dó!)
-    // ME (Stradella): Dó=24, DóM=25, Fá=29, FáM=30, Sol=31, SolM=32, Sol7=44
+    // MIDIs MD (convenção do curso: Dó central = midi 48):
+    //   Dó=48, Ré=50, Mi=52, Fá=53, Sol=55  (só 5 notas — 1ª posição Dó)
+    // ME (Stradella): Dó=24, DóM=25, Fá=29, FáM=30, Sol=31, SolM=32
 
     // 34 notas MD totais. Layout por compasso: 'min' (1 mín pontuada 3t) ou 'sem-min' (1 sem 1t + 1 mín 2t)
     const pvdMD = [
       // Tema A (C1-C8): só mín pontuadas
-      {midi:48, el:'#pvd-1',  beats:3, articulation:0.95},  // C1 Dó4
-      {midi:52, el:'#pvd-2',  beats:3, articulation:0.95},  // C2 Mi4
-      {midi:55, el:'#pvd-3',  beats:3, articulation:0.95},  // C3 Sol4
-      {midi:52, el:'#pvd-4',  beats:3, articulation:0.95},  // C4 Mi4
-      {midi:55, el:'#pvd-5',  beats:3, articulation:0.95},  // C5 Sol4
-      {midi:53, el:'#pvd-6',  beats:3, articulation:0.95},  // C6 Fá4
-      {midi:52, el:'#pvd-7',  beats:3, articulation:0.95},  // C7 Mi4
-      {midi:48, el:'#pvd-8',  beats:3, articulation:0.95},  // C8 Dó4
+      {midi:48, el:'#pvd-1',  beats:3, articulation:0.95},  // C1 Dó
+      {midi:52, el:'#pvd-2',  beats:3, articulation:0.95},  // C2 Mi
+      {midi:55, el:'#pvd-3',  beats:3, articulation:0.95},  // C3 Sol
+      {midi:52, el:'#pvd-4',  beats:3, articulation:0.95},  // C4 Mi
+      {midi:55, el:'#pvd-5',  beats:3, articulation:0.95},  // C5 Sol
+      {midi:53, el:'#pvd-6',  beats:3, articulation:0.95},  // C6 Fá
+      {midi:52, el:'#pvd-7',  beats:3, articulation:0.95},  // C7 Mi
+      {midi:48, el:'#pvd-8',  beats:3, articulation:0.95},  // C8 Dó
       // Variação B (C9-C16): sem (1t) + mín (2t)
       {midi:48, el:'#pvd-9' }, {midi:52, el:'#pvd-10', beats:2, articulation:0.95},  // C9  Dó-Mi
       {midi:52, el:'#pvd-11'}, {midi:55, el:'#pvd-12', beats:2, articulation:0.95},  // C10 Mi-Sol
@@ -850,30 +851,30 @@
       {midi:55, el:'#pvd-21'}, {midi:53, el:'#pvd-22', beats:2, articulation:0.95},  // C15 Sol-Fá
       {midi:52, el:'#pvd-23'}, {midi:48, el:'#pvd-24', beats:2, articulation:0.95},  // C16 Mi-Dó
       // Recapitulação A (C17-C24)
-      {midi:48, el:'#pvd-25', beats:3, articulation:0.95},  // C17 Dó4
-      {midi:52, el:'#pvd-26', beats:3, articulation:0.95},  // C18 Mi4
-      {midi:55, el:'#pvd-27', beats:3, articulation:0.95},  // C19 Sol4
-      {midi:52, el:'#pvd-28', beats:3, articulation:0.95},  // C20 Mi4
-      {midi:55, el:'#pvd-29', beats:3, articulation:0.95},  // C21 Sol4 (mín)
+      {midi:48, el:'#pvd-25', beats:3, articulation:0.95},  // C17 Dó
+      {midi:52, el:'#pvd-26', beats:3, articulation:0.95},  // C18 Mi
+      {midi:55, el:'#pvd-27', beats:3, articulation:0.95},  // C19 Sol
+      {midi:52, el:'#pvd-28', beats:3, articulation:0.95},  // C20 Mi
+      {midi:55, el:'#pvd-29', beats:3, articulation:0.95},  // C21 Sol (mín)
       {midi:55, el:'#pvd-30'}, {midi:53, el:'#pvd-31', beats:2, articulation:0.95},  // C22 Sol-Fá
       {midi:52, el:'#pvd-32'}, {midi:50, el:'#pvd-33', beats:2, articulation:0.95},  // C23 Mi-Ré
-      {midi:48, el:'#pvd-34', beats:3, articulation:0.95},  // C24 Dó4 (final)
+      {midi:48, el:'#pvd-34', beats:3, articulation:0.95},  // C24 Dó (final)
     ];
 
     // ME por compasso [fundamental, acorde]
     const pvdME = [
       [24,25],[24,25],[24,25],[24,25],  // C1-C4: Dó (tônica)
-      [31,44],[31,44],                  // C5-C6: Sol7 (dominante)
+      [31,32],[31,32],                  // C5-C6: Sol (dominante)
       [24,25],[24,25],                  // C7-C8: Dó (volta)
       [24,25],[24,25],                  // C9-C10: Dó
-      [31,44],[31,44],                  // C11-C12: Sol7
+      [31,32],[31,32],                  // C11-C12: Sol
       [24,25],                          // C13: Dó
       [29,30],                          // C14: Fá (subdominante!)
-      [31,44],                          // C15: Sol7
+      [31,32],                          // C15: Sol
       [24,25],                          // C16: Dó
       [24,25],[24,25],[24,25],[24,25],  // C17-C20: Dó (recapitulação)
       [29,30],[29,30],                  // C21-C22: Fá (IV)
-      [31,44],                          // C23: Sol7 (V)
+      [31,32],                          // C23: Sol (V)
       [24,25],                          // C24: Dó (I) — cadência IV-V-I final
     ];
 
@@ -888,36 +889,10 @@
     // Modo de prática: bolinha guia pinga sobre cada nota da partitura na
     // hora de tocar. Aluno usa as teclas G H J K L Ç ~ (Dó-Ré-Mi-Fá-Sol-Lá-Si).
     // Notas mudam de cor: amarelo (preview) → verde (acertou) / vermelho (perdeu).
+    // Valsa simplificada usa só Dó-Ré-Mi-Fá-Sol (1ª posição) — sem transpose.
     import('./js/synthesia.js').then(({ attachSynthesia }) => {
-      const synNotes = [];
-      let mdI = 0;
-      for (let c = 0; c < 24; c++) {
-        const t0 = c*3;
-        if (pvdLayout[c]) {
-          synNotes.push({...pvdMD[mdI], startBeat:t0});
-          mdI++;
-        } else {
-          synNotes.push({...pvdMD[mdI], beats:1, articulation:MEL, startBeat:t0});
-          mdI++;
-          synNotes.push({...pvdMD[mdI], startBeat:t0+1});
-          mdI++;
-        }
-        // ME bum-tchim-tchim — refere o rect/circle do baixo via `el` pra
-        // sinalizar visual durante auto-play (Synthesia acende verde)
-        const [F, M] = pvdME[c];
-        synNotes.push({midi:F, beats:1, isBass:true, articulation:SUST, startBeat:t0,   el:`#pvd-b${c*3+1}`});
-        synNotes.push({midi:M, beats:1, isBass:true, articulation:STAC, startBeat:t0+1, el:`#pvd-b${c*3+2}`});
-        synNotes.push({midi:M, beats:1, isBass:true, articulation:STAC, startBeat:t0+2, el:`#pvd-b${c*3+3}`});
-      }
-
-      // Valsa simplificada usa só Dó-Ré-Mi-Fá-Sol (1ª posição) — não tem
-      // mais Si3 nem Lá4 pra transpor. Notas direto do score.
-
-      // Adiciona _compIdx a cada nota pra filtrar por frase no playFraseSynth
-      synNotes.forEach(n => {
-        if (n._compIdx !== undefined) return;  // bass já tem? não — adiciona
-      });
-      // Re-construir synNotes com _compIdx (não dá pra editar inline pq foi criado num loop)
+      // ALL_NOTES = todas as notas da peça com _compIdx (índice do compasso),
+      // usado pra filtrar por frase em playFraseSynth (Tema A / Variação B / Recap).
       const ALL_NOTES = (() => {
         const arr = [];
         let mdI = 0;

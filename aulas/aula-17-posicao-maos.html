@@ -238,7 +238,7 @@
           <!-- Row 4: Contra (offset 48) — nomes em PT-BR -->
           <g font-size="9" font-weight="700" text-anchor="middle" font-family="sans-serif">
             <g>
-              <circle cx="128" cy="265" r="15" fill="url(#pearl17)" stroke="#666" stroke-width="0.5"/><text x="128" y="268" fill="#1a1a1a">Sol#</text>
+              <circle cx="128" cy="265" r="15" fill="url(#pearl17)" stroke="#666" stroke-width="0.5"/><text x="128" y="268" fill="#1a1a1a">Lá#</text>
               <circle cx="173" cy="265" r="15" fill="url(#pearl17)" stroke="#666" stroke-width="0.5"/><text x="173" y="268" fill="#1a1a1a">Ré#</text>
               <circle cx="218" cy="265" r="15" fill="url(#pearl17)" stroke="#666" stroke-width="0.5"/><text x="218" y="268" fill="#1a1a1a">Sol#</text>
               <circle cx="263" cy="265" r="15" fill="url(#pearl17)" stroke="#666" stroke-width="0.5"/><text x="263" y="268" fill="#1a1a1a">Dó#</text>
@@ -265,7 +265,7 @@
         </svg>
         <figcaption>
           <strong>Layout do baixo do Corvino — igual ao app.</strong>
-          Cada coluna na diagonal cyan toca uma família de notas (Dó7, Dóm, DóM, Dó, Mi-contra). Dedo <strong>4</strong> nos baixos, dedo <strong>3</strong> no acorde maior, dedo <strong>2</strong> nos acordes menores e 7ª. As bolinhas vermelhas são as marcas táteis nos botões de Dó e Mi — seu GPS sem olhar.
+          Cada coluna na diagonal cyan toca uma família de notas (Dóm, DóM, Dó fund, Mi-contra). Dedo <strong>4</strong> nos baixos, dedo <strong>3</strong> no acorde maior, dedo <strong>2</strong> nos acordes menores. As bolinhas vermelhas são as marcas táteis nos botões de Dó e Mi — seu GPS sem olhar.
         </figcaption>
       </figure>
 
@@ -393,21 +393,23 @@
   <script type="module">
     import { attachScorePlayer } from './js/score-player.js';
     const MEL = 0.85;
-    // Escada Dó-Ré-Mi-Fá-Sol-Fá-Mi-Ré-Dó, 9 notas em semínimas
+    // Escada Dó-Ré-Mi-Fá-Sol-Fá-Mi-Ré-Dó, 9 notas em semínimas.
+    // MIDI 48-55 (Dó3-Sol3) — convenção do curso (G no PC = Dó3 = midi 48).
+    // Antes usava 60-67 (Dó4-Sol4) e gerava som "oitavada acima" do esperado.
     attachScorePlayer({
       playBtnId: 'btn-ex17',
       bpm: 80,
       beatsPerBar: 4,
       notes: [
-        { midi: 60, beats: 1, el: '#ex17-n1', articulation: MEL },
-        { midi: 62, beats: 1, el: '#ex17-n2', articulation: MEL },
-        { midi: 64, beats: 1, el: '#ex17-n3', articulation: MEL },
-        { midi: 65, beats: 1, el: '#ex17-n4', articulation: MEL },
-        { midi: 67, beats: 1, el: '#ex17-n5', articulation: MEL },
-        { midi: 65, beats: 1, el: '#ex17-n6', articulation: MEL },
-        { midi: 64, beats: 1, el: '#ex17-n7', articulation: MEL },
-        { midi: 62, beats: 1, el: '#ex17-n8', articulation: MEL },
-        { midi: 60, beats: 1, el: '#ex17-n9', articulation: 0.95 },
+        { midi: 48, beats: 1, el: '#ex17-n1', articulation: MEL },
+        { midi: 50, beats: 1, el: '#ex17-n2', articulation: MEL },
+        { midi: 52, beats: 1, el: '#ex17-n3', articulation: MEL },
+        { midi: 53, beats: 1, el: '#ex17-n4', articulation: MEL },
+        { midi: 55, beats: 1, el: '#ex17-n5', articulation: MEL },
+        { midi: 53, beats: 1, el: '#ex17-n6', articulation: MEL },
+        { midi: 52, beats: 1, el: '#ex17-n7', articulation: MEL },
+        { midi: 50, beats: 1, el: '#ex17-n8', articulation: MEL },
+        { midi: 48, beats: 1, el: '#ex17-n9', articulation: 0.95 },
       ],
     });
   </script>

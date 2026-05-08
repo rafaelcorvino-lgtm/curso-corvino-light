@@ -294,14 +294,18 @@ function autoAttachSynthesia(figure, playBtnId, bpm, beatsPerBar, notes, metrono
   }).catch(err => console.error('[score-player] falha ao carregar synthesia:', err));
 }
 
-export function attachScorePlayer({ playBtnId, bpm = 80, beatsPerBar = null, notes = [], countIn = true, metronome = 'countIn' }) {
+export function attachScorePlayer({ playBtnId, bpm = 80, beatsPerBar = null, notes = [], countIn = true, metronome = 'countIn', noSynthesia = false }) {
   startPinging();
 
   // Auto-injeção do botão Synthesia ANTES do buildPlayerUI, pra que
   // ele seja absorvido na options row da toolbar normalmente.
+  // Pula se noSynthesia=true (exercícios introdutórios onde Synthesia
+  // confunde mais do que ajuda — escala de leitura, p.ex.).
   const oldBtn0 = document.getElementById(playBtnId);
   const figure0 = oldBtn0 && oldBtn0.closest('.score-figure');
-  autoAttachSynthesia(figure0, playBtnId, bpm, beatsPerBar, notes, metronome);
+  if (!noSynthesia) {
+    autoAttachSynthesia(figure0, playBtnId, bpm, beatsPerBar, notes, metronome);
+  }
 
   const ui = buildPlayerUI(playBtnId, bpm, 'Ouvir');
   if (!ui) return;

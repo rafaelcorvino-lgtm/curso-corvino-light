@@ -212,6 +212,29 @@ async function main() {
   pcKeyboard.init({ audio, state });
   appMode.init();
 
+  // Limpa eventuais customizações antigas do kbd-editor (substituído
+  // definitivamente pelo toggle Mesa/Peito).
+  try { localStorage.removeItem('corvino:kbdMap'); } catch (e) {}
+
+  // Toggle Mesa/Peito: troca BOTH bass+MD layout no teclado virtual E o
+  // KEY_MAP do keyboard-input (físico). Visível em todos os modos.
+  const mesaBtn  = document.getElementById('bass-layout-mesa');
+  const peitoBtn = document.getElementById('bass-layout-peito');
+  function applyLayoutBtnState() {
+    const cur = pcKeyboard.getBassLayout();
+    mesaBtn?.classList.toggle('on',  cur === 'mesa');
+    peitoBtn?.classList.toggle('on', cur === 'peito');
+  }
+  function switchLayout(layout) {
+    pcKeyboard.setBassLayout(layout);
+    keyboardInput.setLayout(layout);
+    applyLayoutBtnState();
+    keyboardInput.attachHints();
+  }
+  mesaBtn?.addEventListener('click',  () => switchLayout('mesa'));
+  peitoBtn?.addEventListener('click', () => switchLayout('peito'));
+  applyLayoutBtnState();
+
   // Embed API — permite que as aulas controlem o som via postMessage
   embedApi.init();
 

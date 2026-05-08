@@ -38,42 +38,51 @@ function postToApp(msg) {
   return true;
 }
 
-// --- Mapeamento event.code → MIDI (oitava 4) ---
+// --- Mapeamento event.code → MIDI ---
+// ALINHADO com app/js/keyboard-input.js: G=Dó3 (leftmost da partitura,
+// oitava grave do Corvino), Backslash=Dó4 (segundo Dó do app, oitava
+// acima). Sem alinhamento, o synthesia tocava 1 oitava ACIMA do app
+// (G=60 vs app G=48), gerando som dobrado quando ambos ativos.
 function keyCodeToMidi(code) {
   switch (code) {
-    case 'KeyG':         return 60;
-    case 'KeyH':         return 62;
-    case 'KeyJ':         return 64;
-    case 'KeyK':         return 65;
-    case 'KeyL':         return 67;
-    case 'Semicolon':    return 69;
-    case 'Quote':        return 71;
+    // Brancas — escala de Dó (oitava 3 = leftmost do Corvino)
+    case 'KeyG':         return 48; // Dó3
+    case 'KeyH':         return 50; // Ré3
+    case 'KeyJ':         return 52; // Mi3
+    case 'KeyK':         return 53; // Fá3
+    case 'KeyL':         return 55; // Sol3
+    case 'Semicolon':    return 57; // Lá3 (Ç)
+    case 'Quote':        return 59; // Si3 (~)
+    // Dó OITAVADO (segundo Dó do app) — Dó4 / Dó central
     case 'Backslash':
-    case 'BracketRight': return 72;
-    case 'KeyY':         return 61;
-    case 'KeyU':         return 63;
-    case 'KeyO':         return 66;
-    case 'KeyP':         return 68;
-    case 'BracketLeft':  return 70;
+    case 'BracketRight': return 60; // Dó4
+    // Pretas (sustenidos) na oitava 3
+    case 'KeyY':         return 49; // Dó#3
+    case 'KeyU':         return 51; // Ré#3
+    case 'KeyO':         return 54; // Fá#3
+    case 'KeyP':         return 56; // Sol#3
+    case 'BracketLeft':  return 58; // Lá#3
     default: return null;
   }
 }
-// Inverso, só pra log: nome da tecla esperada pra um midi
+// Inverso, só pra log: nome da tecla esperada pra um midi.
+// Mapeia por PITCH CLASS (mod 12) — assim Dó3 (48), Dó4 (60), Dó5 (72)
+// todos retornam 'G (Dó)'. Coerente com o match por pitch class no handleHit.
 function midiToKey(midi) {
-  switch (midi) {
-    case 60: return 'G (Dó)';
-    case 62: return 'H (Ré)';
-    case 64: return 'J (Mi)';
-    case 65: return 'K (Fá)';
-    case 67: return 'L (Sol)';
-    case 69: return 'Ç (Lá)';
-    case 71: return '~ (Si)';
-    case 72: return '] (Dó8a)';
-    case 61: return 'Y (Dó#)';
-    case 63: return 'U (Ré#)';
-    case 66: return 'O (Fá#)';
-    case 68: return 'P (Sol#)';
-    case 70: return '[ (Lá#)';
+  const pc = ((midi % 12) + 12) % 12;
+  switch (pc) {
+    case 0:  return 'G (Dó)';
+    case 1:  return 'Y (Dó#)';
+    case 2:  return 'H (Ré)';
+    case 3:  return 'U (Ré#)';
+    case 4:  return 'J (Mi)';
+    case 5:  return 'K (Fá)';
+    case 6:  return 'O (Fá#)';
+    case 7:  return 'L (Sol)';
+    case 8:  return 'P (Sol#)';
+    case 9:  return 'Ç (Lá)';
+    case 10: return '[ (Lá#)';
+    case 11: return '~ (Si)';
     default: return '?';
   }
 }
@@ -167,21 +176,37 @@ function midiToBassName(midi) {
 //   Bot   y=110 → Mi4 (64)        Espaço: y=117 → Ré4 (62)
 //   Ledger 1 abaixo: y=125 → Dó4 (60)
 // Pretas (sharps): mesmo y da natural mais próxima.
-function midiToCy(midi) {
-  const map = {
-    60: 125, 61: 125,
-    62: 117, 63: 117,
-    64: 110,
-    65: 102, 66: 102,
-    67: 95,  68: 95,
-    69: 87,  70: 87,
-    71: 80,
-    72: 72,  73: 72,
-    74: 65,  75: 65,
-    76: 57,
-    77: 50,
-  };
-  return map[midi] != null ? map[midi] : null;
+// Mapa cy por pitch class — pauta de Sol com Dó central em cy=125.
+// Cada oitava acima ≈ 53px pra cima (7 graus × ~7.5px por grau).
+const PC_CY = {
+  0: 125, 1: 125,   // Dó / Dó#
+  2: 117, 3: 117,   // Ré / Ré#
+  4: 110,           // Mi
+  5: 102, 6: 102,   // Fá / Fá#
+  7: 95,  8: 95,    // Sol / Sol#
+  9: 87,  10: 87,   // Lá / Lá#
+  11: 80,           // Si
+};
+const OCTAVE_PIXELS = 53;
+
+// Posição vertical na pauta de Sol pra um midi.
+// Sem refOctave: usa a oitava VISUAL central (Dó central = cy 125). Útil
+// pra display geral (bolinha guia, nome da nota etc).
+// Com refOctave: ajusta pra mostrar a oitava RELATIVA à peça. Ex: peça
+// em Dó3 (midi 48, oitava 4) + aluno aperta Backslash (midi 60, oitava 5)
+// → nota fantasma aparece 1 oitava ACIMA do Dó central (cy 72).
+function midiToCy(midi, refOctave = null) {
+  const pc = ((midi % 12) + 12) % 12;
+  const baseCy = PC_CY[pc];
+  if (baseCy == null) return null;
+
+  if (refOctave == null) return baseCy;
+
+  // Ajusta pela diferença de oitavas entre o midi do aluno e a oitava
+  // da peça. +1 oitava → sobe 53px na pauta (cy menor).
+  const studentOctave = Math.floor(midi / 12);
+  const octaveDiff = studentOctave - refOctave;
+  return baseCy - octaveDiff * OCTAVE_PIXELS;
 }
 // Tecla do baixo (pra mostrar acima da bolinha)
 function midiToBassKey(midi) {
@@ -470,12 +495,19 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
   let rafId = null;
   let meTimeouts = [];
   let scheduledClicks = [];   // oscillators do count-in pra cancelar no stop
+  // Teclas atualmente pressionadas pelo aluno → midi/isBass que foi
+  // enviado no noteOn. Usado pra emitir noteOff exato no keyup (sustain
+  // enquanto a tecla fica apertada). Map: e.code → { midi, isBass }
+  const pressedKeys = new Map();
   // Score dinâmico — total cresce conforme notas viram "preview"
   // (esperam o aluno). hits contabiliza preview→hit. Em modo full-auto
   // (ambas mãos ON) o total fica 0 e não mostramos placar.
   const score = { hits: 0, total: 0 };
 
   const originalBtnText = triggerBtn.textContent;
+  // Tooltip mostra o atalho ESPAÇO. Não muda texto visível pra preservar
+  // o layout, mas no hover o aluno descobre.
+  if (!triggerBtn.title) triggerBtn.title = `${originalBtnText} — atalho: ESPAÇO`;
   function updateBtn() {
     if (!running) { triggerBtn.textContent = originalBtnText; return; }
     triggerBtn.textContent = score.total > 0
@@ -490,6 +522,9 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
   // Listener no document em fase de CAPTURE pra rodar antes de qualquer
   // outro listener da página. Não interfere no iframe (frame separado).
   document.addEventListener('keydown', onKey, true);
+  // KeyUp libera a nota: noteOff exato no mesmo midi do noteOn (sustain
+  // enquanto tecla apertada). Sem isso o som corta ao final do timer.
+  document.addEventListener('keyup', onKeyUp, true);
 
   // Toggle 𝄞/𝄢 mudou — sincroniza notas em preview que viraram auto.
   // Se ficou todo mundo auto, retoma o cursor (sai da pausa).
@@ -511,6 +546,14 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     });
   }
 
+  // Outro synthesia da página iniciou — para esse pra evitar 2 rodando
+  // ao mesmo tempo (cada um chamava scrollNoteIntoView no tick, scroll
+  // ficava oscilando entre partituras).
+  document.addEventListener('synthesia:starting', (e) => {
+    if (e.detail && e.detail.trigger === triggerBtn) return; // foi este aqui
+    if (running || waiting) stop();
+  });
+
   // O iframe da app repassa keydowns via postMessage('corvino:keyForward')
   // — necessário pq o iframe normalmente "consome" os eventos quando ele
   // tem foco, e o aluno frequentemente clica nele. Tratamos como keydown.
@@ -531,6 +574,14 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
       });
       return;
     }
+    // KeyUp do iframe (sustain via teclado quando o iframe tem foco).
+    // Se o iframe ainda não envia keyup, o noteOff cai no listener
+    // direto do parent — mas se o iframe envia, processa aqui também.
+    if (d.type === 'corvino:keyForward' && d.evt === 'keyup') {
+      dlog('keyForward (iframe→parent) keyup code=', d.code);
+      onKeyUp({ code: d.code });
+      return;
+    }
 
     // Corvino MIDI físico (acordeon real). Só noteOn — chegam direto
     // na iframe pelo Web MIDI API e não disparam keydown. Passamos
@@ -547,6 +598,14 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
   function start() {
     console.log('[synthesia] START — bpm=', bpm, 'mdNotes[0].midi=', mdNotes[0].midi,
       '(esperado tecla:', midiToKey(mdNotes[0].midi), ')');
+    // Broadcast pra parar QUALQUER OUTRO synthesia que esteja rodando
+    // na mesma página. Aulas com várias partituras (ex: aula 12 com 3
+    // exercícios) podiam ter 2 synthesias rodando ao mesmo tempo, e
+    // cada um chamava scrollNoteIntoView no seu tick → scroll oscilava
+    // entre as partituras (bug "scroll").
+    document.dispatchEvent(new CustomEvent('synthesia:starting', {
+      detail: { trigger: triggerBtn }
+    }));
     running = true;
     waiting = false;
     waitBeat = 0;
@@ -624,6 +683,8 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     // Cancela clicks de count-in que ainda não tocaram
     scheduledClicks.forEach(osc => { try { osc.stop(); } catch (_) {} });
     scheduledClicks = [];
+    // Limpa registro de teclas pressionadas (allOff abaixo desliga som).
+    pressedKeys.clear();
     postToApp({ type: 'corvino:allOff' });
     // Restaura kbd direto da iframe ao estado anterior (que ficou salvo no start)
     postToApp({ type: 'corvino:setKbdEnabled', restore: true });
@@ -908,12 +969,29 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     const isBass = mdMidi == null && bassMidi != null;
     dlog('keydown code=', e.code, 'midi=', midi, 'isBass=', isBass,
       'running=', running, 'waiting=', waiting);
-    if (!running) return;
     if (midi == null) return;
     if (e.repeat) { e.preventDefault(); return; }
     e.preventDefault();
+    // Já registrada como pressionada? Ignora (evita noteOn duplicado se
+    // o evento chegou 2x — ex: relay do iframe + listener direto).
+    if (pressedKeys.has(e.code)) return;
     flashBtn();
-    handleHit(midi, isBass, true);
+    const result = handleHit(midi, isBass, true);
+    // Registra a tecla pressionada com o midi REALMENTE tocado (pode ser
+    // diferente do mdMidi se o match por pitch class transpôs pra oitava
+    // da nota esperada). NoteOff sai no keyup com o mesmo midi.
+    if (result && result.soundMidi != null) {
+      pressedKeys.set(e.code, { midi: result.soundMidi, isBass: result.isBass });
+    }
+  }
+
+  // Solta a nota: emite noteOff no MESMO midi que foi enviado no noteOn.
+  // Garante sustain enquanto a tecla estiver apertada (UX musical correta).
+  function onKeyUp(e) {
+    const pressed = pressedKeys.get(e.code);
+    if (!pressed) return;
+    pressedKeys.delete(e.code);
+    postToApp({ type: 'corvino:noteOff', midi: pressed.midi, isBass: pressed.isBass });
   }
 
   // Pisca o botão pra confirmar visualmente que a tecla foi capturada
@@ -939,8 +1017,11 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     const compassoStart = Math.floor(elapsed / bpb) * bpb;
     const compassoEnd = compassoStart + bpb;
 
-    // 3. Acha TODAS as notas matching DENTRO DO COMPASSO ATUAL
-    //    (exceto preview = target esperado)
+    // 3. Acha notas matching EXATAS (mesmo midi+oitava) DENTRO DO COMPASSO
+    //    ATUAL (exceto preview). Match exato (não pitch class) pra que:
+    //    - Aluno aperta G (Dó3) errado em peça Dó3 → flash nas notas Dó3
+    //    - Aluno aperta ] (Dó4) em peça Dó3 → wrongs=0 → cria FANTASMA
+    //      na oitava 5 (1 oitava acima da peça) em vez de só piscar.
     const wrongs = allNotes.filter(n =>
       n.midi === midi &&
       n.isBass === isBass &&
@@ -990,16 +1071,20 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     if (refCy == null) return;
     const staveOffset = prev._pos.y - refCy;
     const cx = parseFloat(cursor.getAttribute('x1') || prev._pos.x);
+    // Oitava da peça (= oitava de prev). Usado pra posicionar fantasma
+    // RELATIVO à peça: tecla 1 oitava acima da peça → aparece 1 oitava
+    // acima visualmente (ex: ] em peça Dó3 → cy 72 = Dó5 visual).
+    const refOctave = Math.floor(prev.midi / 12);
 
     if (isBass) {
       showGhostBassCell(cx, staveOffset, midi);
     } else {
-      showGhostTrebleNote(cx, staveOffset, midi);
+      showGhostTrebleNote(cx, staveOffset, midi, refOctave);
     }
   }
 
-  function showGhostTrebleNote(cx, staveOffset, midi) {
-    const relCy = midiToCy(midi);
+  function showGhostTrebleNote(cx, staveOffset, midi, refOctave) {
+    const relCy = midiToCy(midi, refOctave);
     if (relCy == null) return;
     const absCy = relCy + staveOffset;
 
@@ -1076,13 +1161,29 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
   //    "hit precoce", aluno tocou antes do cursor processar a nota.
   //    Aceita como hit (música tem que ter timing flexível).
   // playSound=false quando o som já foi tocado pelo iframe (Corvino real).
+  //
+  // MATCH por PITCH CLASS (mod 12) — qualquer Dó bate com qualquer Dó,
+  // independente da oitava. Necessário porque o teclado do PC fixa as
+  // teclas em oitava 4 (G=60), mas as aulas usam diferentes oitavas
+  // (ex: aula 10 Dó3=48). Match por classe permite aluno tocar em
+  // qualquer oitava e o Synthesia entende.
+  // Som tocado SEMPRE na oitava da nota esperada (target.midi), não
+  // na oitava do que o aluno apertou — fix "oitava sobe".
+  // Retorna { soundMidi, isBass } pra que onKey registre no pressedKeys
+  // e o noteOff seja emitido no keyup (sustain enquanto segurar tecla).
   function handleHit(midi, isBass = false, playSound = true) {
-    if (playSound) {
-      postToApp({ type: 'corvino:noteOn', midi, isBass });
-      setTimeout(() => postToApp({ type: 'corvino:noteOff', midi, isBass }), 250);
-    }
+    const pitchClass = ((midi % 12) + 12) % 12;
 
-    if (!running) return;
+    if (!running) {
+      // Sem peça rodando — synthesia NÃO emite som. O iframe app
+      // (keyboard-input.js) já está ativo e cuida do som direto.
+      // Importante: o synthesia mapeia G→60 (Dó4) e o iframe app
+      // mapeia G→48 (Dó3). Se ambos tocassem, sairia DOBRADO (Dó3+Dó4
+      // = oitavada). Pra peça parada, deixa só o iframe tocar.
+      // Retorna null pra que onKey NÃO registre em pressedKeys (sem
+      // noteOn → sem noteOff necessário).
+      return null;
+    }
 
     // Calcula elapsedBeats atual (durante pausa usa waitBeat)
     const elapsed = waiting
@@ -1091,7 +1192,7 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
 
     // 1ª tentativa: preview match (cursor já chegou)
     let target = allNotes.find(n =>
-      n._state === 'preview' && n.midi === midi && n.isBass === isBass
+      n._state === 'preview' && (((n.midi % 12) + 12) % 12) === pitchClass && n.isBass === isBass
     );
 
     // 2ª tentativa: pending early-hit (aluno antecipou dentro da window).
@@ -1102,12 +1203,22 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
       const handState = getHandState();
       target = allNotes.find(n => {
         if (n._state !== 'pending') return false;
-        if (n.midi !== midi || n.isBass !== isBass) return false;
+        if ((((n.midi % 12) + 12) % 12) !== pitchClass || n.isBass !== isBass) return false;
         if (Math.abs(elapsed - n.startBeat) > HIT_WINDOW_BEATS) return false;
         // Só aceita early hit se a mão estaria em wait (toggle OFF)
         return n.isBass ? !handState.me : !handState.md;
       });
       if (target) earlyHit = true;
+    }
+
+    // Som: target encontrado → toca na oitava do target.
+    // Sem target → toca o midi EXATO da tecla (já alinhado com app:
+    // G=48 Dó3, Backslash=60 Dó4 oitavado, etc). Respeita oitavas
+    // explícitas que o aluno escolheu (ex: ] = Dó oitavado intencional).
+    // NoteOff é emitido pelo keyup (sustain enquanto segurar tecla).
+    const soundMidi = target ? target.midi : midi;
+    if (playSound) {
+      postToApp({ type: 'corvino:noteOn', midi: soundMidi, isBass });
     }
 
     dlog('handleHit midi=', midi, 'isBass=', isBass,
@@ -1123,7 +1234,7 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
       const handState = getHandState();
       const inWaitMode = !handState.md || !handState.me;
       if (inWaitMode) flashWrongNote(midi, isBass);
-      return;
+      return { soundMidi, isBass };
     }
 
     // Hit precoce: contabiliza no total (não passou pelo tick que faria isso)
@@ -1143,6 +1254,7 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
       const stillWaiting = allNotes.some(n => n._state === 'preview');
       if (!stillWaiting) resume();
     }
+    return { soundMidi, isBass };
   }
 
   function showFinalScore() {
@@ -1292,43 +1404,105 @@ function createKeyHint(svg) {
   svg.appendChild(text);
   return text;
 }
-// Pega o nome da nota a partir do midi (p/ exibir dentro da bolinha)
-// Mostra Dó, Ré, Mi... — combina com o nome que o aluno vê na partitura.
+// Pega o nome da nota a partir do midi (p/ exibir dentro da bolinha).
+// Por PITCH CLASS — qualquer oitava do Dó retorna 'Dó' (peças do curso
+// usam midi 48-59 mas representam visualmente como Dó central).
 function midiToNoteName(midi) {
-  // Notação fixa Dó central (MIDI 60). Pretas usam o sustenido.
-  switch (midi) {
-    case 60: return 'Dó';
-    case 61: return 'Dó#';
-    case 62: return 'Ré';
-    case 63: return 'Ré#';
-    case 64: return 'Mi';
-    case 65: return 'Fá';
-    case 66: return 'Fá#';
-    case 67: return 'Sol';
-    case 68: return 'Sol#';
-    case 69: return 'Lá';
-    case 70: return 'Lá#';
-    case 71: return 'Si';
-    case 72: return 'Dó';
+  const pc = ((midi % 12) + 12) % 12;
+  switch (pc) {
+    case 0:  return 'Dó';
+    case 1:  return 'Dó#';
+    case 2:  return 'Ré';
+    case 3:  return 'Ré#';
+    case 4:  return 'Mi';
+    case 5:  return 'Fá';
+    case 6:  return 'Fá#';
+    case 7:  return 'Sol';
+    case 8:  return 'Sol#';
+    case 9:  return 'Lá';
+    case 10: return 'Lá#';
+    case 11: return 'Si';
     default: return '?';
   }
 }
-// Letra da tecla (p/ exibir como hint pequeno acima da bolinha)
+// Letra da tecla (p/ exibir como hint pequeno acima da bolinha).
+// Por PITCH CLASS — qualquer Dó (midi 48, 60, 72…) retorna 'G',
+// qualquer Ré retorna 'H', etc.
 function midiToKeyLetter(midi) {
-  switch (midi) {
-    case 60: return 'G';
-    case 62: return 'H';
-    case 64: return 'J';
-    case 65: return 'K';
-    case 67: return 'L';
-    case 69: return 'Ç';
-    case 71: return '~';
-    case 72: return ']';
-    case 61: return 'Y';
-    case 63: return 'U';
-    case 66: return 'O';
-    case 68: return 'P';
-    case 70: return '[';
+  const pc = ((midi % 12) + 12) % 12;
+  switch (pc) {
+    case 0:  return 'G';   // Dó
+    case 1:  return 'Y';   // Dó#
+    case 2:  return 'H';   // Ré
+    case 3:  return 'U';   // Ré#
+    case 4:  return 'J';   // Mi
+    case 5:  return 'K';   // Fá
+    case 6:  return 'O';   // Fá#
+    case 7:  return 'L';   // Sol
+    case 8:  return 'P';   // Sol#
+    case 9:  return 'Ç';   // Lá
+    case 10: return '[';   // Lá#
+    case 11: return '~';   // Si
     default: return '?';
   }
+}
+
+// ===== Atalho global ESPAÇO = toggle play/stop do Synthesia =====
+// Singleton: instala 1 listener no document mesmo com vários attachSynthesia.
+// Lógica:
+//   1. Não interfere em INPUT/TEXTAREA/contenteditable (espaço normal)
+//   2. Só age se TEM .synth-trigger visível na viewport
+//   3. Se algum synthesia visível tá rodando → para esse (prioridade alta)
+//   4. Senão → inicia o synthesia mais central da viewport
+// Útil em aulas com várias partituras: aluno rola até a peça que quer
+// estudar e aperta espaço sem precisar pegar o mouse.
+if (typeof window !== 'undefined' && !window.__corvinoSynthSpaceShortcut) {
+  window.__corvinoSynthSpaceShortcut = true;
+  document.addEventListener('keydown', (e) => {
+    if (e.code !== 'Space') return;
+
+    // Não roubar o espaço de inputs e contenteditable
+    const tg = e.target;
+    if (tg) {
+      const tag = (tg.tagName || '').toUpperCase();
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tg.isContentEditable) return;
+    }
+
+    // Acha todos os botões Synthesia da página
+    const triggers = Array.from(document.querySelectorAll('.synth-trigger'));
+    if (triggers.length === 0) return;
+
+    // Filtra os que estão visíveis na viewport (com folga de 50px)
+    const visible = triggers.filter(btn => {
+      const fig = btn.closest('.score-figure');
+      if (!fig) return false;
+      const r = fig.getBoundingClientRect();
+      return r.bottom > 50 && r.top < window.innerHeight - 50;
+    });
+    if (visible.length === 0) return;
+
+    // Prioriza o que está rodando (pra parar)
+    let target = visible.find(btn =>
+      btn.classList.contains('playing') ||
+      btn.classList.contains('count-in')
+    );
+
+    // Senão, pega o synthesia cuja figure está mais central na viewport
+    if (!target) {
+      const vc = window.innerHeight / 2;
+      let bestDist = Infinity;
+      for (const btn of visible) {
+        const fig = btn.closest('.score-figure');
+        const r = fig.getBoundingClientRect();
+        const c = (r.top + r.bottom) / 2;
+        const d = Math.abs(c - vc);
+        if (d < bestDist) { bestDist = d; target = btn; }
+      }
+    }
+
+    if (target) {
+      e.preventDefault();
+      target.click();
+    }
+  }, true);
 }
