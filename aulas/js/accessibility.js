@@ -12,7 +12,10 @@
   let fontZoom = parseFloat(localStorage.getItem(STORAGE_FONT)) || 1.0;
   let hideApp = localStorage.getItem(STORAGE_HIDE_APP) === '1';
   let panelOpen = localStorage.getItem(STORAGE_PANEL_OPEN) === '1';
-  let appWidth = parseInt(localStorage.getItem(STORAGE_APP_WIDTH)) || 650;
+  // Default 700px: largura confortável que cabe todo o bass keyboard +
+  // bar de comandos (presets + Mesa/Peito + ícones) + 2 oitavas de piano
+  // sem cortar nada. Aluno pode arrastar o splitter pra ajustar.
+  let appWidth = parseInt(localStorage.getItem(STORAGE_APP_WIDTH)) || 700;
 
   const APP_MIN = 280;
   const APP_MAX = 900;
@@ -69,7 +72,7 @@
     applyState();
   }
   function resetAppWidth() {
-    appWidth = 650;
+    appWidth = 700;
     localStorage.setItem(STORAGE_APP_WIDTH, appWidth);
     applyState();
   }
