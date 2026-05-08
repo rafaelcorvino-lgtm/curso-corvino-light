@@ -39,78 +39,93 @@ function postToApp(msg) {
 }
 
 // --- Mapeamento event.code → MIDI ---
-// ALINHADO com app/js/keyboard-input.js: G=Dó3 (leftmost da partitura,
-// oitava grave do Corvino), Backslash=Dó4 (segundo Dó do app, oitava
-// acima). Sem alinhamento, o synthesia tocava 1 oitava ACIMA do app
-// (G=60 vs app G=48), gerando som dobrado quando ambos ativos.
+// ALINHADO com app/js/keyboard-input.js: layout MD novo (FL Studio piano,
+// unificado Mesa/Peito). V=Dó3 (leftmost da partitura, oitava grave do
+// Corvino), IntlRo=Dó4 (segundo Dó do app, oitava acima).
 function keyCodeToMidi(code) {
   switch (code) {
-    // Brancas — escala de Dó (oitava 3 = leftmost do Corvino)
-    case 'KeyG':         return 48; // Dó3
-    case 'KeyH':         return 50; // Ré3
-    case 'KeyJ':         return 52; // Mi3
-    case 'KeyK':         return 53; // Fá3
-    case 'KeyL':         return 55; // Sol3
-    case 'Semicolon':    return 57; // Lá3 (Ç)
-    case 'Quote':        return 59; // Si3 (~)
-    // Dó OITAVADO (segundo Dó do app) — Dó4 / Dó central
-    case 'Backslash':
-    case 'BracketRight': return 60; // Dó4
-    // Pretas (sustenidos) na oitava 3
-    case 'KeyY':         return 49; // Dó#3
-    case 'KeyU':         return 51; // Ré#3
-    case 'KeyO':         return 54; // Fá#3
-    case 'KeyP':         return 56; // Sol#3
-    case 'BracketLeft':  return 58; // Lá#3
+    // Brancas (bottom row do QWERTY) — escala de Dó oitava 3
+    case 'KeyV':    return 48; // Dó3
+    case 'KeyB':    return 50; // Ré3
+    case 'KeyN':    return 52; // Mi3
+    case 'KeyM':    return 53; // Fá3
+    case 'Comma':   return 55; // Sol3
+    case 'Period':  return 57; // Lá3
+    case 'Slash':   return 59; // Si3 (em ABNT2: ;)
+    // Dó OITAVADO — Dó4 / Dó central. IntlRo é a tecla extra ABNT2 (/?)
+    case 'IntlRo':  return 60; // Dó4
+    // Pretas (sustenidos) — home row em cima dos whites
+    case 'KeyG':    return 49; // Dó#3
+    case 'KeyH':    return 51; // Ré#3
+    case 'KeyK':    return 54; // Fá#3
+    case 'KeyL':    return 56; // Sol#3
+    case 'Semicolon': return 58; // Lá#3 (em ABNT2: Ç)
     default: return null;
   }
 }
 // Inverso, só pra log: nome da tecla esperada pra um midi.
 // Mapeia por PITCH CLASS (mod 12) — assim Dó3 (48), Dó4 (60), Dó5 (72)
-// todos retornam 'G (Dó)'. Coerente com o match por pitch class no handleHit.
+// todos retornam 'V (Dó)'. Coerente com o match por pitch class no handleHit.
 function midiToKey(midi) {
   const pc = ((midi % 12) + 12) % 12;
   switch (pc) {
-    case 0:  return 'G (Dó)';
-    case 1:  return 'Y (Dó#)';
-    case 2:  return 'H (Ré)';
-    case 3:  return 'U (Ré#)';
-    case 4:  return 'J (Mi)';
-    case 5:  return 'K (Fá)';
-    case 6:  return 'O (Fá#)';
-    case 7:  return 'L (Sol)';
-    case 8:  return 'P (Sol#)';
-    case 9:  return 'Ç (Lá)';
-    case 10: return '[ (Lá#)';
-    case 11: return '~ (Si)';
+    case 0:  return 'V (Dó)';
+    case 1:  return 'G (Dó#)';
+    case 2:  return 'B (Ré)';
+    case 3:  return 'H (Ré#)';
+    case 4:  return 'N (Mi)';
+    case 5:  return 'M (Fá)';
+    case 6:  return 'K (Fá#)';
+    case 7:  return ', (Sol)';
+    case 8:  return 'L (Sol#)';
+    case 9:  return '. (Lá)';
+    case 10: return 'Ç (Lá#)';
+    case 11: return '/ (Si)';
     default: return '?';
   }
 }
-// --- Mapeamento BAIXOS (event.code → MIDI). Mesma layout do
-// keyboard-input.js da app. Dá pro aluno tocar ME no teclado quando
-// quer estudar a esquerda em modo wait.
+// --- Mapeamento BAIXOS (event.code → MIDI). Layout-aware: lê
+// localStorage 'corvino:bassLayout' (mesma chave do app/keyboard-input.js).
+// Mesa: m=ASDF, M=QWER, fund=1234 (Ré/Sol/Dó/Fá)
+// Peito: m=1234, M=QWER, fund=ASDF (m e fund trocados)
+// MD igual nos dois layouts (mas MD não é tratado aqui, esse fn é só baixo).
 function keyCodeToBassMidi(code) {
+  let layout = 'mesa';
+  try {
+    const saved = localStorage.getItem('corvino:bassLayout');
+    if (saved === 'peito') layout = 'peito';
+  } catch (_) {}
+  // M row é IGUAL nos dois layouts (Q W E R → Ré/Sol/Dó/Fá M)
   switch (code) {
-    // Coluna Dó
-    case 'Digit2': return 28; // contrabaixo
-    case 'KeyW':   return 24; // fundamental
-    case 'KeyS':   return 25; // maior
-    case 'KeyX':   return 36; // menor
-    // Coluna Fá
-    case 'Digit1': return 33;
-    case 'KeyQ':   return 29;
-    case 'KeyA':   return 30;
-    case 'KeyZ':   return 41;
-    // Coluna Sol
-    case 'Digit3': return 35;
-    case 'KeyE':   return 31;
-    case 'KeyD':   return 32;
-    case 'KeyC':   return 43;
-    // Coluna Ré
-    case 'Digit4': return 54;
-    case 'KeyR':   return 26;
-    case 'KeyF':   return 27;
-    case 'KeyV':   return 38;
+    case 'KeyQ': return 27; // Ré M
+    case 'KeyW': return 32; // Sol M
+    case 'KeyE': return 25; // Dó M
+    case 'KeyR': return 30; // Fá M
+  }
+  if (layout === 'peito') {
+    // Peito: m em 1234, fund em ASDF
+    switch (code) {
+      case 'Digit1': return 38; // Ré m
+      case 'Digit2': return 43; // Sol m
+      case 'Digit3': return 36; // Dó m
+      case 'Digit4': return 41; // Fá m
+      case 'KeyA':   return 26; // Ré fund
+      case 'KeyS':   return 31; // Sol fund
+      case 'KeyD':   return 24; // Dó fund
+      case 'KeyF':   return 29; // Fá fund
+      default: return null;
+    }
+  }
+  // Mesa: m em ASDF, fund em 1234
+  switch (code) {
+    case 'KeyA':   return 38; // Ré m
+    case 'KeyS':   return 43; // Sol m
+    case 'KeyD':   return 36; // Dó m
+    case 'KeyF':   return 41; // Fá m
+    case 'Digit1': return 26; // Ré fund
+    case 'Digit2': return 31; // Sol fund
+    case 'Digit3': return 24; // Dó fund
+    case 'Digit4': return 29; // Fá fund
     default: return null;
   }
 }
