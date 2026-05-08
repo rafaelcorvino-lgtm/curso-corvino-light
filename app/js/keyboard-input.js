@@ -38,22 +38,23 @@ import * as pcKeyboard from './pc-keyboard.js';
 // de linha física no PC. Mesa põe home row (ASDF) no m e número row (1234)
 // no fund. Sem 7ª, sem cbx (3 linhas). M = Q W E R (top row, igual Peito).
 const KEY_MAP_MESA = {
-  // --- Mão direita (piano, centro/direita do QWERTY) — Dó3-Dó4 ---
-  // (idêntico ao KEY_MAP_PEITO MD)
-  KeyV:      { midi: 48, isBass: false }, // Dó3
-  KeyB:      { midi: 50, isBass: false }, // Ré3
-  KeyN:      { midi: 52, isBass: false }, // Mi3
-  KeyM:      { midi: 53, isBass: false }, // Fá3
-  Comma:     { midi: 55, isBass: false }, // Sol3
-  Period:    { midi: 57, isBass: false }, // Lá3
-  Slash:     { midi: 59, isBass: false }, // Si3
-  IntlRo:    { midi: 60, isBass: false }, // Dó4 — tecla extra BR ABNT2 (/?)
-  // Pretas (sustenidos) — home row em cima dos whites
-  KeyG:      { midi: 49, isBass: false }, // Dó#3
-  KeyH:      { midi: 51, isBass: false }, // Ré#3
-  KeyK:      { midi: 54, isBass: false }, // Fá#3
-  KeyL:      { midi: 56, isBass: false }, // Sol#3
-  Semicolon: { midi: 58, isBass: false }, // Lá#3 (em ABNT2: Ç)
+  // --- Mão direita (piano, lado DIREITO do QWERTY) — Dó3-Dó4 ---
+  // UNIFICADO Mesa/Peito.
+  KeyG:         { midi: 48, isBass: false }, // Dó3
+  KeyH:         { midi: 50, isBass: false }, // Ré3
+  KeyJ:         { midi: 52, isBass: false }, // Mi3
+  KeyK:         { midi: 53, isBass: false }, // Fá3
+  KeyL:         { midi: 55, isBass: false }, // Sol3
+  Semicolon:    { midi: 57, isBass: false }, // Lá3 (em ABNT2: Ç)
+  Quote:        { midi: 59, isBass: false }, // Si3 (em ABNT2: ~)
+  Backslash:    { midi: 60, isBass: false }, // Dó4 — ABNT2: tecla ]
+  BracketRight: { midi: 60, isBass: false }, // Dó4 — US: tecla ]
+  // Pretas (sustenidos)
+  KeyY:        { midi: 49, isBass: false }, // Dó#3
+  KeyU:        { midi: 51, isBass: false }, // Ré#3
+  KeyO:        { midi: 54, isBass: false }, // Fá#3
+  KeyP:        { midi: 56, isBass: false }, // Sol#3
+  BracketLeft: { midi: 58, isBass: false }, // Lá#3
 
   // --- Mão esquerda (baixo) — ORDEM esq→dir: Ré · Sol · Dó · Fá ---
   // m — home row ASDF
@@ -78,34 +79,36 @@ const KEY_MAP_MESA = {
 // Mão direita fica no centro/direita do QWERTY (piano em V B N M , . / IntlRo
 // com blacks G H _ K L ; — estilo FL Studio piano). Sem 7ª, sem cbx (3 linhas).
 const KEY_MAP_PEITO = {
-  // --- Mão direita (piano, centro/direita do QWERTY) — Dó3-Dó4 ---
-  KeyV:      { midi: 48, isBass: false }, // Dó3
-  KeyB:      { midi: 50, isBass: false }, // Ré3
-  KeyN:      { midi: 52, isBass: false }, // Mi3
-  KeyM:      { midi: 53, isBass: false }, // Fá3
-  Comma:     { midi: 55, isBass: false }, // Sol3
-  Period:    { midi: 57, isBass: false }, // Lá3
-  Slash:     { midi: 59, isBass: false }, // Si3
-  IntlRo:    { midi: 60, isBass: false }, // Dó4 — tecla extra BR ABNT2 (/?)
-  // Pretas (sustenidos) — home row em cima dos whites
-  KeyG:      { midi: 49, isBass: false }, // Dó#3
-  KeyH:      { midi: 51, isBass: false }, // Ré#3
-  KeyK:      { midi: 54, isBass: false }, // Fá#3
-  KeyL:      { midi: 56, isBass: false }, // Sol#3
-  Semicolon: { midi: 58, isBass: false }, // Lá#3 (em ABNT2: Ç)
+  // --- Mão direita (piano, lado DIREITO do QWERTY) — Dó3-Dó4 ---
+  // UNIFICADO Mesa/Peito (idêntico ao KEY_MAP_MESA MD).
+  KeyG:         { midi: 48, isBass: false }, // Dó3
+  KeyH:         { midi: 50, isBass: false }, // Ré3
+  KeyJ:         { midi: 52, isBass: false }, // Mi3
+  KeyK:         { midi: 53, isBass: false }, // Fá3
+  KeyL:         { midi: 55, isBass: false }, // Sol3
+  Semicolon:    { midi: 57, isBass: false }, // Lá3 (em ABNT2: Ç)
+  Quote:        { midi: 59, isBass: false }, // Si3 (em ABNT2: ~)
+  Backslash:    { midi: 60, isBass: false }, // Dó4 — ABNT2: tecla ]
+  BracketRight: { midi: 60, isBass: false }, // Dó4 — US: tecla ]
+  // Pretas (sustenidos)
+  KeyY:        { midi: 49, isBass: false }, // Dó#3
+  KeyU:        { midi: 51, isBass: false }, // Ré#3
+  KeyO:        { midi: 54, isBass: false }, // Fá#3
+  KeyP:        { midi: 56, isBass: false }, // Sol#3
+  BracketLeft: { midi: 58, isBass: false }, // Lá#3
 
-  // --- Mão esquerda (baixo, lado ESQUERDO do QWERTY) — ORDEM esq→dir: Ré · Sol · Dó · Fá ---
-  // fund — home row ASDF
+  // --- Mão esquerda (baixo) — m e fund TROCAM linha física comparado ao Mesa ---
+  // fund — home row ASDF (era number row no Mesa)
   KeyA:    { midi: 26, isBass: true, row: 3 }, // Ré fund
   KeyS:    { midi: 31, isBass: true, row: 3 }, // Sol fund
   KeyD:    { midi: 24, isBass: true, row: 3 }, // Dó fund
   KeyF:    { midi: 29, isBass: true, row: 3 }, // Fá fund
-  // M — top row QWER
+  // M — top row QWER (igual Mesa)
   KeyQ:    { midi: 27, isBass: true, row: 2 }, // Ré M
   KeyW:    { midi: 32, isBass: true, row: 2 }, // Sol M
   KeyE:    { midi: 25, isBass: true, row: 2 }, // Dó M
   KeyR:    { midi: 30, isBass: true, row: 2 }, // Fá M
-  // m — number row 1-4
+  // m — number row 1-4 (era home row no Mesa)
   Digit1:  { midi: 38, isBass: true, row: 1 }, // Ré m
   Digit2:  { midi: 43, isBass: true, row: 1 }, // Sol m
   Digit3:  { midi: 36, isBass: true, row: 1 }, // Dó m
@@ -125,22 +128,25 @@ function getActiveKeyMap() {
 }
 
 // Labels padrão por layout (ABNT2) — ajustados via event.key no primeiro keypress
+// MD igual nos dois layouts (G H J K L Ç ~ ] whites + Y U O P [ blacks).
 const DEFAULT_LABELS_MESA = {
-  // MD centro/direita (idêntico ao Peito)
-  KeyV: 'V', KeyB: 'B', KeyN: 'N', KeyM: 'M',
-  Comma: ',', Period: '.', Slash: ';', IntlRo: '/',
-  KeyG: 'G', KeyH: 'H', KeyK: 'K', KeyL: 'L', Semicolon: 'Ç',
+  // MD lado direito do QWERTY
+  KeyG: 'G', KeyH: 'H', KeyJ: 'J', KeyK: 'K', KeyL: 'L',
+  Semicolon: 'Ç', Quote: '~',
+  Backslash: ']', BracketRight: ']',
+  KeyY: 'Y', KeyU: 'U', KeyO: 'O', KeyP: 'P', BracketLeft: '[',
   // Baixo lado esquerdo
   KeyA: 'A', KeyS: 'S', KeyD: 'D', KeyF: 'F',
   KeyQ: 'Q', KeyW: 'W', KeyE: 'E', KeyR: 'R',
   Digit1: '1', Digit2: '2', Digit3: '3', Digit4: '4',
 };
 const DEFAULT_LABELS_PEITO = {
-  // MD centro/direita
-  KeyV: 'V', KeyB: 'B', KeyN: 'N', KeyM: 'M',
-  Comma: ',', Period: '.', Slash: ';', IntlRo: '/',
-  KeyG: 'G', KeyH: 'H', KeyK: 'K', KeyL: 'L', Semicolon: 'Ç',
-  // Baixo lado esquerdo
+  // MD lado direito do QWERTY (mesmo do Mesa)
+  KeyG: 'G', KeyH: 'H', KeyJ: 'J', KeyK: 'K', KeyL: 'L',
+  Semicolon: 'Ç', Quote: '~',
+  Backslash: ']', BracketRight: ']',
+  KeyY: 'Y', KeyU: 'U', KeyO: 'O', KeyP: 'P', BracketLeft: '[',
+  // Baixo lado esquerdo (m e fund trocados em relação ao Mesa)
   Digit1: '1', Digit2: '2', Digit3: '3', Digit4: '4',
   KeyQ: 'Q', KeyW: 'W', KeyE: 'E', KeyR: 'R',
   KeyA: 'A', KeyS: 'S', KeyD: 'D', KeyF: 'F',

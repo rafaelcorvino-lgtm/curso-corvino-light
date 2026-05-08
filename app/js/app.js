@@ -212,9 +212,8 @@ async function main() {
   pcKeyboard.init({ audio, state });
   appMode.init();
 
-  // Limpa eventuais customizações antigas do kbd-editor (substituído
-  // definitivamente pelo toggle Mesa/Peito).
-  try { localStorage.removeItem('corvino:kbdMap'); } catch (e) {}
+  // Limpa qualquer remap customizado deixado pelo editor experimental.
+  try { localStorage.removeItem('corvino:kbdMap'); } catch (_) {}
 
   // Toggle Mesa/Peito: troca BOTH bass+MD layout no teclado virtual E o
   // KEY_MAP do keyboard-input (físico). Visível em todos os modos.

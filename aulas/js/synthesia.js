@@ -39,48 +39,49 @@ function postToApp(msg) {
 }
 
 // --- Mapeamento event.code → MIDI ---
-// ALINHADO com app/js/keyboard-input.js: layout MD novo (FL Studio piano,
-// unificado Mesa/Peito). V=Dó3 (leftmost da partitura, oitava grave do
-// Corvino), IntlRo=Dó4 (segundo Dó do app, oitava acima).
+// ALINHADO com app/js/keyboard-input.js: MD UNIFICADO Mesa/Peito — usa
+// lado direito do QWERTY. G=Dó3 (leftmost da partitura, oitava grave do
+// Corvino), Backslash=Dó4 (segundo Dó do app, oitava acima).
 function keyCodeToMidi(code) {
   switch (code) {
-    // Brancas (bottom row do QWERTY) — escala de Dó oitava 3
-    case 'KeyV':    return 48; // Dó3
-    case 'KeyB':    return 50; // Ré3
-    case 'KeyN':    return 52; // Mi3
-    case 'KeyM':    return 53; // Fá3
-    case 'Comma':   return 55; // Sol3
-    case 'Period':  return 57; // Lá3
-    case 'Slash':   return 59; // Si3 (em ABNT2: ;)
-    // Dó OITAVADO — Dó4 / Dó central. IntlRo é a tecla extra ABNT2 (/?)
-    case 'IntlRo':  return 60; // Dó4
-    // Pretas (sustenidos) — home row em cima dos whites
-    case 'KeyG':    return 49; // Dó#3
-    case 'KeyH':    return 51; // Ré#3
-    case 'KeyK':    return 54; // Fá#3
-    case 'KeyL':    return 56; // Sol#3
-    case 'Semicolon': return 58; // Lá#3 (em ABNT2: Ç)
+    // Brancas — escala de Dó (oitava 3 = leftmost do Corvino)
+    case 'KeyG':         return 48; // Dó3
+    case 'KeyH':         return 50; // Ré3
+    case 'KeyJ':         return 52; // Mi3
+    case 'KeyK':         return 53; // Fá3
+    case 'KeyL':         return 55; // Sol3
+    case 'Semicolon':    return 57; // Lá3 (em ABNT2: Ç)
+    case 'Quote':        return 59; // Si3 (em ABNT2: ~)
+    // Dó OITAVADO (segundo Dó do app) — Dó4 / Dó central
+    case 'Backslash':
+    case 'BracketRight': return 60; // Dó4
+    // Pretas (sustenidos) — top row em cima dos whites
+    case 'KeyY':         return 49; // Dó#3
+    case 'KeyU':         return 51; // Ré#3
+    case 'KeyO':         return 54; // Fá#3
+    case 'KeyP':         return 56; // Sol#3
+    case 'BracketLeft':  return 58; // Lá#3
     default: return null;
   }
 }
 // Inverso, só pra log: nome da tecla esperada pra um midi.
 // Mapeia por PITCH CLASS (mod 12) — assim Dó3 (48), Dó4 (60), Dó5 (72)
-// todos retornam 'V (Dó)'. Coerente com o match por pitch class no handleHit.
+// todos retornam 'G (Dó)'.
 function midiToKey(midi) {
   const pc = ((midi % 12) + 12) % 12;
   switch (pc) {
-    case 0:  return 'V (Dó)';
-    case 1:  return 'G (Dó#)';
-    case 2:  return 'B (Ré)';
-    case 3:  return 'H (Ré#)';
-    case 4:  return 'N (Mi)';
-    case 5:  return 'M (Fá)';
-    case 6:  return 'K (Fá#)';
-    case 7:  return ', (Sol)';
-    case 8:  return 'L (Sol#)';
-    case 9:  return '. (Lá)';
-    case 10: return 'Ç (Lá#)';
-    case 11: return '/ (Si)';
+    case 0:  return 'G (Dó)';
+    case 1:  return 'Y (Dó#)';
+    case 2:  return 'H (Ré)';
+    case 3:  return 'U (Ré#)';
+    case 4:  return 'J (Mi)';
+    case 5:  return 'K (Fá)';
+    case 6:  return 'O (Fá#)';
+    case 7:  return 'L (Sol)';
+    case 8:  return 'P (Sol#)';
+    case 9:  return 'Ç (Lá)';
+    case 10: return '[ (Lá#)';
+    case 11: return '~ (Si)';
     default: return '?';
   }
 }

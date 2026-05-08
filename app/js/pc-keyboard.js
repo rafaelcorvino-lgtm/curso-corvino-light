@@ -196,84 +196,83 @@ function getBassSVG() {
 // unificado entre os dois layouts, então MESA aponta pro mesmo SVG do PEITO.)
 
 // ========================================================================
-// LAYOUT PEITO — MD piano (mão direita usa centro/direita do teclado).
-// Whites: V B N M , . / IntlRo (bottom row, posições 4-11)
-// Blacks: G H _ K L ; (home row em cima, posições 5,6,8,9,10 — gaps Mi-Fá e Si-Dó)
-// IntlRo é a tecla extra de teclado BR ABNT2 (entre Right Shift e L) com /?.
+// MD piano UNIFICADO (Mesa = Peito) — usa lado direito do QWERTY.
+// Whites: G H J K L Ç ~ ] (home row direita)
+// Blacks: Y U _ O P [ (top row direita, com gaps Mi-Fá e Si-Dó)
 // ========================================================================
 const SVG_MD_HTML_PEITO = `
 <svg viewBox="0 0 340 105" class="pc-kbd-svg pc-kbd-md" preserveAspectRatio="xMidYMid meet">
-  <!-- ====== LINHA SUPERIOR (pretas): G H _ K L ; ====== -->
+  <!-- ====== LINHA SUPERIOR (pretas): Y U _ O P [ ====== -->
   <g class="pc-row pc-row-black">
-    <g class="pc-key pc-empty" data-kind="empty"><rect x="20" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="38" y="35">F</text></g>
-    <g class="pc-key" data-code="KeyG" data-kind="black">
+    <g class="pc-key pc-empty" data-kind="empty"><rect x="20" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="38" y="35">T</text></g>
+    <g class="pc-key" data-code="KeyY" data-kind="black">
       <rect x="60" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="31">G</text>
+      <text class="pc-letter" x="78" y="31">Y</text>
       <text class="pc-label" x="78" y="44" data-note="Dó">Dó♯</text>
     </g>
-    <g class="pc-key" data-code="KeyH" data-kind="black">
+    <g class="pc-key" data-code="KeyU" data-kind="black">
       <rect x="100" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="31">H</text>
+      <text class="pc-letter" x="118" y="31">U</text>
       <text class="pc-label" x="118" y="44" data-note="Ré">Ré♯</text>
     </g>
-    <g class="pc-key pc-empty" data-kind="empty"><rect x="140" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="158" y="35">J</text></g>
-    <g class="pc-key" data-code="KeyK" data-kind="black">
+    <g class="pc-key pc-empty" data-kind="empty"><rect x="140" y="10" width="36" height="40" rx="4"/><text class="pc-letter-empty" x="158" y="35">I</text></g>
+    <g class="pc-key" data-code="KeyO" data-kind="black">
       <rect x="180" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="198" y="31">K</text>
+      <text class="pc-letter" x="198" y="31">O</text>
       <text class="pc-label" x="198" y="44" data-note="Fá">Fá♯</text>
     </g>
-    <g class="pc-key" data-code="KeyL" data-kind="black">
+    <g class="pc-key" data-code="KeyP" data-kind="black">
       <rect x="220" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="238" y="31">L</text>
+      <text class="pc-letter" x="238" y="31">P</text>
       <text class="pc-label" x="238" y="44" data-note="Sol">Sol♯</text>
     </g>
-    <g class="pc-key" data-code="Semicolon" data-kind="black">
+    <g class="pc-key" data-code="BracketLeft" data-kind="black">
       <rect x="260" y="10" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="278" y="31">Ç</text>
+      <text class="pc-letter" x="278" y="31">[</text>
       <text class="pc-label" x="278" y="44" data-note="Lá">Lá♯</text>
     </g>
   </g>
 
-  <!-- ====== LINHA INFERIOR (brancas): V B N M , . / IntlRo ====== -->
+  <!-- ====== LINHA INFERIOR (brancas): G H J K L Ç ~ ] ====== -->
   <g class="pc-row pc-row-white">
-    <g class="pc-key" data-code="KeyV" data-kind="white">
+    <g class="pc-key" data-code="KeyG" data-kind="white">
       <rect x="20" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="38" y="79">V</text>
+      <text class="pc-letter" x="38" y="79">G</text>
       <text class="pc-label" x="38" y="92" data-note="Dó">Dó</text>
     </g>
-    <g class="pc-key" data-code="KeyB" data-kind="white">
+    <g class="pc-key" data-code="KeyH" data-kind="white">
       <rect x="60" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="78" y="79">B</text>
+      <text class="pc-letter" x="78" y="79">H</text>
       <text class="pc-label" x="78" y="92" data-note="Ré">Ré</text>
     </g>
-    <g class="pc-key" data-code="KeyN" data-kind="white">
+    <g class="pc-key" data-code="KeyJ" data-kind="white">
       <rect x="100" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="118" y="79">N</text>
+      <text class="pc-letter" x="118" y="79">J</text>
       <text class="pc-label" x="118" y="92" data-note="Mi">Mi</text>
     </g>
-    <g class="pc-key" data-code="KeyM" data-kind="white">
+    <g class="pc-key" data-code="KeyK" data-kind="white">
       <rect x="140" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="158" y="79">M</text>
+      <text class="pc-letter" x="158" y="79">K</text>
       <text class="pc-label" x="158" y="92" data-note="Fá">Fá</text>
     </g>
-    <g class="pc-key" data-code="Comma" data-kind="white">
+    <g class="pc-key" data-code="KeyL" data-kind="white">
       <rect x="180" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="198" y="79">,</text>
+      <text class="pc-letter" x="198" y="79">L</text>
       <text class="pc-label" x="198" y="92" data-note="Sol">Sol</text>
     </g>
-    <g class="pc-key" data-code="Period" data-kind="white">
+    <g class="pc-key" data-code="Semicolon" data-kind="white">
       <rect x="220" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="238" y="79">.</text>
+      <text class="pc-letter" x="238" y="79">Ç</text>
       <text class="pc-label" x="238" y="92" data-note="Lá">Lá</text>
     </g>
-    <g class="pc-key" data-code="Slash" data-kind="white">
+    <g class="pc-key" data-code="Quote" data-kind="white">
       <rect x="260" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="278" y="79">;</text>
+      <text class="pc-letter" x="278" y="79">~</text>
       <text class="pc-label" x="278" y="92" data-note="Si">Si</text>
     </g>
-    <g class="pc-key" data-code="IntlRo" data-kind="white">
+    <g class="pc-key" data-code="Backslash" data-kind="white">
       <rect x="300" y="58" width="36" height="40" rx="4"/>
-      <text class="pc-letter" x="318" y="79">/</text>
+      <text class="pc-letter" x="318" y="79">]</text>
       <text class="pc-label" x="318" y="92" data-note="Dó">Dó(8va)</text>
     </g>
   </g>
@@ -299,21 +298,22 @@ const targetToEl = new Map();
 // MD unificado: Mesa e Peito usam o mesmo MD, então CODE_TO_NOTE_MESA
 // aponta pro CODE_TO_NOTE_PEITO (declarado logo abaixo).
 const CODE_TO_NOTE_PEITO = {
-  // MD brancas (Peito: V B N M , . / IntlRo) — Dó-Dó8va
-  KeyV:    { midi: 48, isBass: false }, // Dó
-  KeyB:    { midi: 50, isBass: false }, // Ré
-  KeyN:    { midi: 52, isBass: false }, // Mi
-  KeyM:    { midi: 53, isBass: false }, // Fá
-  Comma:   { midi: 55, isBass: false }, // Sol
-  Period:  { midi: 57, isBass: false }, // Lá
-  Slash:   { midi: 59, isBass: false }, // Si
-  IntlRo:  { midi: 60, isBass: false }, // Dó(8va) — tecla extra BR ABNT2
-  // MD pretas (Peito: G H _ K L ;)
-  KeyG:      { midi: 49, isBass: false }, // Dó#
-  KeyH:      { midi: 51, isBass: false }, // Ré#
-  KeyK:      { midi: 54, isBass: false }, // Fá#
-  KeyL:      { midi: 56, isBass: false }, // Sol#
-  Semicolon: { midi: 58, isBass: false }, // Lá#
+  // MD brancas (G H J K L Ç ~ ]) — Dó-Dó8va. UNIFICADO Mesa/Peito.
+  KeyG:        { midi: 48, isBass: false }, // Dó
+  KeyH:        { midi: 50, isBass: false }, // Ré
+  KeyJ:        { midi: 52, isBass: false }, // Mi
+  KeyK:        { midi: 53, isBass: false }, // Fá
+  KeyL:        { midi: 55, isBass: false }, // Sol
+  Semicolon:   { midi: 57, isBass: false }, // Lá (Ç na ABNT2)
+  Quote:       { midi: 59, isBass: false }, // Si (~ na ABNT2)
+  Backslash:   { midi: 60, isBass: false }, // Dó(8va) — ABNT2: tecla ]
+  BracketRight:{ midi: 60, isBass: false }, // Dó(8va) — US: tecla ]
+  // MD pretas (Y U _ O P [)
+  KeyY:        { midi: 49, isBass: false }, // Dó#
+  KeyU:        { midi: 51, isBass: false }, // Ré#
+  KeyO:        { midi: 54, isBass: false }, // Fá#
+  KeyP:        { midi: 56, isBass: false }, // Sol#
+  BracketLeft: { midi: 58, isBass: false }, // Lá#
 };
 const CODE_TO_NOTE_MESA = CODE_TO_NOTE_PEITO; // MD idêntico entre layouts
 function getCodeToNote() {
@@ -466,21 +466,20 @@ export function releaseAll() {
 }
 
 // Mapeia midi → event.code da tecla virtual. Usado pelo Synthesia das aulas
-// pra ACENDER (highlight) a tecla esperada. MD é unificado Mesa/Peito (FL
-// Studio piano: V B N M , . / IntlRo whites + G H K L ; blacks).
-// Pitches acima de Dó4 (60) caem no equivalente em oitava 3 (mesma pitch class).
+// pra ACENDER (highlight) a tecla esperada. MD UNIFICADO Mesa/Peito —
+// lado direito do QWERTY (G H J K L Ç ~ ] whites + Y U O P [ blacks).
 const MIDI_TO_CODE_MD = {
   // Oitava 3 (Dó3-Si3) — visível no piano MD
-  48: 'KeyV', 49: 'KeyG', 50: 'KeyB', 51: 'KeyH', 52: 'KeyN',
-  53: 'KeyM', 54: 'KeyK', 55: 'Comma', 56: 'KeyL', 57: 'Period',
-  58: 'Semicolon', 59: 'Slash',
-  // Dó4 — Dó8va, último tile do piano (IntlRo)
-  60: 'IntlRo',
+  48: 'KeyG', 49: 'KeyY', 50: 'KeyH', 51: 'KeyU', 52: 'KeyJ',
+  53: 'KeyK', 54: 'KeyO', 55: 'KeyL', 56: 'KeyP', 57: 'Semicolon',
+  58: 'BracketLeft', 59: 'Quote',
+  // Dó4 — Dó8va, último tile do piano (Backslash em ABNT2)
+  60: 'Backslash',
   // Oitavas acima — fallback pra pitch class equivalente em oitava 3
-  61: 'KeyG', 62: 'KeyB', 63: 'KeyH', 64: 'KeyN', 65: 'KeyM',
-  66: 'KeyK', 67: 'Comma', 68: 'KeyL', 69: 'Period', 70: 'Semicolon', 71: 'Slash',
-  72: 'KeyV', 73: 'KeyG', 74: 'KeyB', 75: 'KeyH', 76: 'KeyN',
-  77: 'KeyM', 78: 'KeyK', 79: 'Comma', 80: 'KeyL', 81: 'Period',
+  61: 'KeyY', 62: 'KeyH', 63: 'KeyU', 64: 'KeyJ', 65: 'KeyK',
+  66: 'KeyO', 67: 'KeyL', 68: 'KeyP', 69: 'Semicolon', 70: 'BracketLeft', 71: 'Quote',
+  72: 'KeyG', 73: 'KeyY', 74: 'KeyH', 75: 'KeyU', 76: 'KeyJ',
+  77: 'KeyK', 78: 'KeyO', 79: 'KeyL', 80: 'KeyP', 81: 'Semicolon',
 };
 // BASS mapping difere entre Mesa e Peito (m e fund trocados; M igual).
 const MIDI_TO_CODE_BASS_MESA = {
