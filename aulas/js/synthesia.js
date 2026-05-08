@@ -1467,11 +1467,10 @@ function midiToKeyLetter(midi) {
 // Singleton: instala 1 listener no document mesmo com vários attachSynthesia.
 // Lógica:
 //   1. Não interfere em INPUT/TEXTAREA/contenteditable (espaço normal)
-//   2. Só age se TEM .synth-trigger visível na viewport
-//   3. Se algum synthesia visível tá rodando → para esse (prioridade alta)
-//   4. Senão → inicia o synthesia mais central da viewport
-// Útil em aulas com várias partituras: aluno rola até a peça que quer
-// estudar e aperta espaço sem precisar pegar o mouse.
+//   2. Se algum synthesia tá rodando → para esse (prioridade alta)
+//   3. Senão → inicia o synthesia mais próximo do centro da viewport.
+//      Se a partitura tá fora da viewport, rola até ela primeiro pra
+//      o aluno acompanhar visualmente, e dispara o play depois do scroll.
 if (typeof window !== 'undefined' && !window.__corvinoSynthSpaceShortcut) {
   window.__corvinoSynthSpaceShortcut = true;
   document.addEventListener('keydown', (e) => {
@@ -1488,37 +1487,46 @@ if (typeof window !== 'undefined' && !window.__corvinoSynthSpaceShortcut) {
     const triggers = Array.from(document.querySelectorAll('.synth-trigger'));
     if (triggers.length === 0) return;
 
-    // Filtra os que estão visíveis na viewport (com folga de 50px)
-    const visible = triggers.filter(btn => {
-      const fig = btn.closest('.score-figure');
-      if (!fig) return false;
-      const r = fig.getBoundingClientRect();
-      return r.bottom > 50 && r.top < window.innerHeight - 50;
-    });
-    if (visible.length === 0) return;
-
-    // Prioriza o que está rodando (pra parar)
-    let target = visible.find(btn =>
+    // Prioriza o que está rodando (pra parar) — em qualquer posição
+    let target = triggers.find(btn =>
       btn.classList.contains('playing') ||
       btn.classList.contains('count-in')
     );
 
-    // Senão, pega o synthesia cuja figure está mais central na viewport
+    // Senão, pega o synthesia cuja figure está mais próxima do centro
+    // da viewport (mesmo que esteja fora — em aulas com 1 partitura
+    // longe do topo, ainda assim aciona).
     if (!target) {
       const vc = window.innerHeight / 2;
       let bestDist = Infinity;
-      for (const btn of visible) {
+      for (const btn of triggers) {
         const fig = btn.closest('.score-figure');
+        if (!fig) continue;
         const r = fig.getBoundingClientRect();
         const c = (r.top + r.bottom) / 2;
         const d = Math.abs(c - vc);
         if (d < bestDist) { bestDist = d; target = btn; }
       }
+      // Fallback: se nenhum trigger tem .score-figure parent, usa o 1º
+      if (!target) target = triggers[0];
     }
 
-    if (target) {
-      e.preventDefault();
-      target.click();
+    if (!target) return;
+    e.preventDefault();
+
+    // Se a partitura tá fora da viewport, rola até ela ANTES de acionar.
+    // Assim o aluno vê o count-in/cursor sem precisar pegar o mouse pra rolar.
+    const fig = target.closest('.score-figure');
+    if (fig) {
+      const r = fig.getBoundingClientRect();
+      const offscreen = r.bottom <= 50 || r.top >= window.innerHeight - 50;
+      if (offscreen) {
+        fig.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // delay ~350ms pra terminar o scroll antes do click
+        setTimeout(() => target.click(), 350);
+        return;
+      }
     }
+    target.click();
   }, true);
 }
