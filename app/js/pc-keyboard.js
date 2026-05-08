@@ -465,26 +465,46 @@ export function releaseAll() {
   keyByCode.forEach(el => el.classList.remove('active'));
 }
 
-// Mapeia midi → event.code da tecla virtual. Cobre oitavas 3 (app
-// keyboard-input.js) e 4 (Synthesia das aulas) + algumas notas agudas.
+// Mapeia midi → event.code da tecla virtual. Usado pelo Synthesia das aulas
+// pra ACENDER (highlight) a tecla esperada. MD é unificado Mesa/Peito (FL
+// Studio piano: V B N M , . / IntlRo whites + G H K L ; blacks).
+// Pitches acima de Dó4 (60) caem no equivalente em oitava 3 (mesma pitch class).
 const MIDI_TO_CODE_MD = {
-  48: 'KeyG', 50: 'KeyH', 52: 'KeyJ', 53: 'KeyK',
-  55: 'KeyL', 57: 'Semicolon', 59: 'Quote',
-  60: 'KeyG', 62: 'KeyH', 64: 'KeyJ', 65: 'KeyK',
-  67: 'KeyL', 69: 'Semicolon', 71: 'Quote',
-  72: 'Backslash', 74: 'KeyH', 76: 'KeyJ', 77: 'KeyK', 79: 'KeyL',
-  49: 'KeyY', 51: 'KeyU', 54: 'KeyO', 56: 'KeyP', 58: 'BracketLeft',
-  61: 'KeyY', 63: 'KeyU', 66: 'KeyO', 68: 'KeyP', 70: 'BracketLeft',
+  // Oitava 3 (Dó3-Si3) — visível no piano MD
+  48: 'KeyV', 49: 'KeyG', 50: 'KeyB', 51: 'KeyH', 52: 'KeyN',
+  53: 'KeyM', 54: 'KeyK', 55: 'Comma', 56: 'KeyL', 57: 'Period',
+  58: 'Semicolon', 59: 'Slash',
+  // Dó4 — Dó8va, último tile do piano (IntlRo)
+  60: 'IntlRo',
+  // Oitavas acima — fallback pra pitch class equivalente em oitava 3
+  61: 'KeyG', 62: 'KeyB', 63: 'KeyH', 64: 'KeyN', 65: 'KeyM',
+  66: 'KeyK', 67: 'Comma', 68: 'KeyL', 69: 'Period', 70: 'Semicolon', 71: 'Slash',
+  72: 'KeyV', 73: 'KeyG', 74: 'KeyB', 75: 'KeyH', 76: 'KeyN',
+  77: 'KeyM', 78: 'KeyK', 79: 'Comma', 80: 'KeyL', 81: 'Period',
 };
-const MIDI_TO_CODE_BASS = {
-  24: 'KeyW', 25: 'KeyS', 28: 'Digit2', 36: 'KeyX',
-  29: 'KeyQ', 30: 'KeyA', 33: 'Digit1', 41: 'KeyZ',
-  31: 'KeyE', 32: 'KeyD', 35: 'Digit3', 43: 'KeyC',
-  26: 'KeyR', 27: 'KeyF', 54: 'Digit4', 38: 'KeyV',
+// BASS mapping difere entre Mesa e Peito (m e fund trocados; M igual).
+const MIDI_TO_CODE_BASS_MESA = {
+  // m row (Ré/Sol/Dó/Fá m)
+  38: 'KeyA', 43: 'KeyS', 36: 'KeyD', 41: 'KeyF',
+  // M row (Ré/Sol/Dó/Fá M)
+  27: 'KeyQ', 32: 'KeyW', 25: 'KeyE', 30: 'KeyR',
+  // fund row (Ré/Sol/Dó/Fá fund)
+  26: 'Digit1', 31: 'Digit2', 24: 'Digit3', 29: 'Digit4',
 };
+const MIDI_TO_CODE_BASS_PEITO = {
+  // m row (Ré/Sol/Dó/Fá m)
+  38: 'Digit1', 43: 'Digit2', 36: 'Digit3', 41: 'Digit4',
+  // M row (Ré/Sol/Dó/Fá M) — IGUAL ao Mesa
+  27: 'KeyQ', 32: 'KeyW', 25: 'KeyE', 30: 'KeyR',
+  // fund row (Ré/Sol/Dó/Fá fund)
+  26: 'KeyA', 31: 'KeyS', 24: 'KeyD', 29: 'KeyF',
+};
+function getMidiToCodeBass() {
+  return currentBassLayout === 'peito' ? MIDI_TO_CODE_BASS_PEITO : MIDI_TO_CODE_BASS_MESA;
+}
 
 export function setActiveByMidi(midi, isBass, on) {
-  const code = isBass ? MIDI_TO_CODE_BASS[midi] : MIDI_TO_CODE_MD[midi];
+  const code = isBass ? getMidiToCodeBass()[midi] : MIDI_TO_CODE_MD[midi];
   if (code) setActive(code, on);
 }
 
