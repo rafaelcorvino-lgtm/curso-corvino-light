@@ -571,11 +571,26 @@ html.embedded #app, html.embedded #splash { display: flex !important; }
   gap: 4px;
   align-items: center;
   justify-content: center;
-  /* Centralizado no meio exato da barra, independente do tamanho dos lados */
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /* Flex-flow no meio da barra (entre conn-row à esquerda e bar-toggles à
+     direita). Cresce pra preencher o espaço disponível, e scrolla horizontal
+     quando os tabs não couberem (iframe estreito). NÃO sobrepõe os outros
+     elementos porque participa do flex layout. */
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(218,165,32,0.4) transparent;
+}
+.register-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+.register-tabs::-webkit-scrollbar-thumb {
+  background: rgba(218,165,32,0.4);
+  border-radius: 2px;
+}
+.register-tabs::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .register-tab {
