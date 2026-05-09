@@ -829,7 +829,7 @@ footer a { color: #d4d4d8; }
       Seu navegador não suporta vídeo HTML5.
     </video>
 
-    <a href="#comprar" class="cta-btn" onclick="trackCTA('hero')">QUERO TESTAR POR R$ 97</a>
+    <a href="https://go.hotmart.com/G105763123V" target="_blank" rel="noopener" class="cta-btn" onclick="trackCTA('hero')">QUERO TESTAR POR R$ 97</a>
     <p class="cta-meta">12x de R$ 9,98 sem juros · acesso imediato · sem precisar de acordeon</p>
   </div>
 </section>
@@ -1061,7 +1061,7 @@ footer a { color: #d4d4d8; }
       </div>
       <p class="price-installments">ou <strong>12x de R$ 9,98</strong> sem juros</p>
 
-      <a href="#" id="btn-comprar" class="cta-btn" onclick="trackCTA('pricing'); return true;">QUERO COMEÇAR AGORA</a>
+      <a href="https://go.hotmart.com/G105763123V" target="_blank" rel="noopener" id="btn-comprar" class="cta-btn" onclick="trackCTA('pricing')">QUERO COMEÇAR AGORA</a>
 
       <p class="payment-methods">💳 Cartão · ⚡ PIX · 📄 Boleto<br>Acesso imediato após o pagamento</p>
     </div>
@@ -1164,7 +1164,7 @@ footer a { color: #d4d4d8; }
   <div class="container" style="text-align: center;">
     <h2 class="section-title">Pronto pra tocar?</h2>
     <p class="section-sub">Em 2 dias você toca sua primeira valsa. Em 7 dias você decide se vale ou pede reembolso.</p>
-    <a href="#comprar" class="cta-btn" onclick="trackCTA('footer')">COMEÇAR AGORA POR R$ 97</a>
+    <a href="https://go.hotmart.com/G105763123V" target="_blank" rel="noopener" class="cta-btn" onclick="trackCTA('footer')">COMEÇAR AGORA POR R$ 97</a>
     <p class="cta-meta" style="color: var(--text-soft);">12x de R$ 9,98 · acesso imediato · garantia 7 dias</p>
   </div>
 </section>
@@ -1185,7 +1185,7 @@ footer a { color: #d4d4d8; }
     <div class="from">12x de R$ 9,98</div>
     <div class="price">R$ 97<span class="small">,00</span></div>
   </div>
-  <a href="#comprar" class="cta-btn" onclick="trackCTA('sticky')">COMPRAR</a>
+  <a href="https://go.hotmart.com/G105763123V" target="_blank" rel="noopener" class="cta-btn" onclick="trackCTA('sticky')">COMPRAR</a>
 </div>
 
 <!-- WHATSAPP -->
@@ -1208,13 +1208,8 @@ function trackCTA(local) {
   console.log('CTA clicked:', local);
 }
 
-// Botão "Comprar" — substituir pelo Hotlink Hotmart quando o produto estiver criado
-document.getElementById('btn-comprar').addEventListener('click', function(e) {
-  e.preventDefault();
-  // SUBSTITUIR PELA URL HOTMART:
-  // window.location.href = 'https://pay.hotmart.com/SEU_PRODUTO';
-  alert('Aguardando integração Hotmart.\n\nQuando você criar o produto na Hotmart, me mande o Hotlink que eu pluga aqui.');
-});
+// Botão "Comprar" — Hotlink Hotmart integrado
+// (links já configurados em href, JS aqui só pra eventos de tracking)
 </script>
 
 </body>
