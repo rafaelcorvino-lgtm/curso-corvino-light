@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corvino Acordeon MIDI · Links</title>
+<meta name="description" content="Curso oficial, loja, WhatsApp e redes sociais do Corvino Acordeon MIDI.">
+<link rel="icon" type="image/png" href="../assets/img/corvo_favicon_130x130.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0c;
+  --gold: #d4b444;
+  --gold-light: #f5d96c;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(212,180,68,0.2);
+  --card-hover: rgba(212,180,68,0.5);
+  --text: #f4ecd8;
+  --text-soft: #a89878;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 32px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at top, rgba(212,180,68,0.08), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(220,38,38,0.05), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.container {
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* HEADER */
+.profile {
+  text-align: center;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.6s ease-out;
+}
+.profile-logo {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  margin: 0 auto 16px;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+  border-radius: 12px;
+  background: #000;
+}
+.profile-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.profile-tagline {
+  font-size: 14px;
+  color: var(--text-soft);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.profile-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(212,180,68,0.15);
+  border: 1px solid rgba(212,180,68,0.4);
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* LINKS */
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.18s, border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+.link::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(212,180,68,0.08), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.link:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-hover);
+  background: rgba(212,180,68,0.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.link:hover::before { transform: translateX(100%); }
+.link:active { transform: translateY(0); }
+
+.link-icon {
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: rgba(212,180,68,0.12);
+}
+.link-text { flex: 1; min-width: 0; }
+.link-title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
+}
+.link-sub {
+  font-size: 12.5px;
+  color: var(--text-soft);
+  line-height: 1.35;
+}
+.link-arrow {
+  flex-shrink: 0;
+  color: var(--gold);
+  font-size: 18px;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.link:hover .link-arrow { opacity: 1; transform: translateX(2px); }
+
+/* DESTAQUE — link principal */
+.link-featured {
+  background: linear-gradient(135deg, rgba(212,180,68,0.18) 0%, rgba(220,38,38,0.10) 100%);
+  border-color: var(--gold);
+  border-width: 2px;
+}
+.link-featured .link-icon {
+  background: linear-gradient(135deg, var(--gold), #b8901e);
+  color: #1a1618;
+}
+.link-featured .link-title { color: var(--gold-light); }
+.featured-tag {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: var(--gold);
+  color: #1a1618;
+  letter-spacing: 0.06em;
+  margin-left: 6px;
+  vertical-align: 1px;
+}
+
+/* SOCIAL ROW */
+.social-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+.social-link {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s;
+  color: var(--text);
+}
+.social-link:hover { transform: translateY(-3px); border-color: var(--gold); }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  margin-top: 36px;
+  font-size: 11px;
+  color: var(--text-soft);
+  opacity: 0.6;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.link:nth-child(1) { animation-delay: 0.05s; }
+.link:nth-child(2) { animation-delay: 0.10s; }
+.link:nth-child(3) { animation-delay: 0.15s; }
+.link:nth-child(4) { animation-delay: 0.20s; }
+.link:nth-child(5) { animation-delay: 0.25s; }
+.link:nth-child(6) { animation-delay: 0.30s; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="profile">
+    <video class="profile-logo" autoplay loop muted playsinline preload="metadata"
+           poster="../assets/img/corvo_logo_completo.png"
+           aria-label="Corvino Acordeon MIDI">
+      <source src="../assets/video/corvo_banner_web.mp4" type="video/mp4">
+    </video>
+    <h1 class="profile-name">CORVINO ACORDEON MIDI</h1>
+    <p class="profile-tagline">Inventado por Rafael Corvino · Botucatu/SP</p>
+    <div class="profile-badges">
+      <span class="badge">🥇 1º MIDI sem fole do mundo</span>
+      <span class="badge">🥇 1º curso com Synthesia</span>
+    </div>
+  </div>
+
+  <nav class="links">
+
+    <a href="https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/" class="link link-featured" target="_blank" rel="noopener">
+      <span class="link-icon">🎓</span>
+      <div class="link-text">
+        <div class="link-title">Curso Corvino Light <span class="featured-tag">NOVO</span></div>
+        <div class="link-sub">Aprenda em 2 dias · R$ 97 · garantia 7 dias</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://www.corvino.com.br/" class="link" target="_blank" rel="noopener">
+      <span class="link-icon">🪗</span>
+      <div class="link-text">
+        <div class="link-title">Comprar Corvino Acordeon</div>
+        <div class="link-sub">Loja oficial · 1,6 kg · MIDI sem fole</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://wa.me/5514997456913?text=Oi%20Rafael%2C%20vim%20pelo%20Instagram" class="link" target="_blank" rel="noopener">
+      <span class="link-icon">💬</span>
+      <div class="link-text">
+        <div class="link-title">WhatsApp</div>
+        <div class="link-sub">(14) 99745-6913 · resposta rápida</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://rafaelcorvino-lgtm.github.io/curso-corvino-light/" class="link" target="_blank" rel="noopener">
+      <span class="link-icon">🎮</span>
+      <div class="link-text">
+        <div class="link-title">Acordeon virtual grátis</div>
+        <div class="link-sub">Toque pelo teclado do PC · sem cadastro</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://www.instagram.com/corvino_acordeonmidi/" class="link" target="_blank" rel="noopener">
+      <span class="link-icon">📸</span>
+      <div class="link-text">
+        <div class="link-title">Instagram</div>
+        <div class="link-sub">@corvino_acordeonmidi · vídeos do acordeon</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://www.youtube.com/@corvino_acordeonmidi" class="link" target="_blank" rel="noopener">
+      <span class="link-icon">▶️</span>
+      <div class="link-text">
+        <div class="link-title">YouTube</div>
+        <div class="link-sub">Tutoriais e demonstrações em vídeo</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+  </nav>
+
+  <footer>
+    © 2026 Corvino Acordeon MIDI · Todos os direitos reservados
+  </footer>
+
+</div>
+
+</body>
+</html>
