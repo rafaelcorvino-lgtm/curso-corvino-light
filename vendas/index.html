@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descubra se você dá conta de tocar acordeon — sem comprar instrumento</title>
+<meta name="description" content="Toque acordeon pelo teclado do computador. Em 2 dias descubra se você nasceu pra isso, antes de investir num instrumento. Método interativo Corvino.">
+
+<meta property="og:title" content="Descubra se você dá conta de tocar acordeon — sem comprar instrumento">
+<meta property="og:description" content="Toque acordeon pelo teclado do computador. Em 2 dias descubra se você nasceu pra isso, antes de investir num instrumento.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://curso.corvino.com.br">
+<meta property="og:image" content="https://curso.corvino.com.br/assets/img/corvo_logo_header_575x230.png">
+<link rel="icon" type="image/png" href="assets/img/corvo_favicon_130x130.png">
+
+<!-- PIXEL META — substituir SEU_PIXEL_ID -->
+<!--
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'SEU_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+-->
+
+<!-- GOOGLE TAG (GA4) — substituir SEU_GA_ID -->
+<!--
+<script async src="https://www.googletagmanager.com/gtag/js?id=SEU_GA_ID"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','SEU_GA_ID');
+</script>
+-->
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #fafaf7;
+  --bg-card: #ffffff;
+  --bg-dark: #18181b;
+  --text: #18181b;
+  --text-soft: #52525b;
+  --primary: #dc2626;
+  --primary-dark: #b91c1c;
+  --accent: #f59e0b;
+  --success: #16a34a;
+  --border: #e4e4e7;
+  --shadow: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
+}
+img, video { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* TOP BANNER — destaque do diferencial principal */
+.top-banner {
+  position: relative;
+  background: linear-gradient(90deg, #b45309 0%, #ea580c 25%, #f59e0b 50%, #ea580c 75%, #b45309 100%);
+  background-size: 300% 100%;
+  color: #fff;
+  padding: 12px 16px;
+  border-bottom: 3px solid #78350f;
+  animation: bannerShine 8s linear infinite;
+  overflow: hidden;
+}
+.top-banner::before, .top-banner::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  z-index: 1;
+}
+.top-banner::before { left: 0; background: linear-gradient(90deg, rgba(0,0,0,0.25), transparent); }
+.top-banner::after { right: 0; background: linear-gradient(270deg, rgba(0,0,0,0.25), transparent); }
+
+.top-banner-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .top-banner-inner { flex-direction: row; gap: 14px; }
+}
+
+.top-banner-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 3px 10px 3px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.top-banner-pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fef3c7;
+  box-shadow: 0 0 0 0 rgba(254,243,199,0.9);
+  animation: bannerPulse 1.6s ease-out infinite;
+}
+@keyframes bannerPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(254,243,199,0.9); transform: scale(1); }
+  70%  { box-shadow: 0 0 0 8px rgba(254,243,199,0); transform: scale(1.1); }
+  100% { box-shadow: 0 0 0 0 rgba(254,243,199,0); transform: scale(1); }
+}
+
+.top-banner-text {
+  font-size: clamp(13px, 3.4vw, 15.5px);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+.top-banner-text strong {
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+.top-banner-text .sep {
+  display: inline-block;
+  margin: 0 6px;
+  opacity: 0.7;
+}
+
+@keyframes bannerShine {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 300% 0%; }
+}
+
+/* HERO LOGO — corvo animado */
+.hero-logo {
+  display: block;
+  max-width: 460px;
+  width: 95%;
+  height: auto;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  background: #000;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+  color: #fff;
+  padding: 36px 0 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-keyboard-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(245,158,11,0.15);
+  border: 2px solid var(--accent);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-keyboard-callout .kb-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.hero-keyboard-callout .kb-text {
+  text-align: left;
+  font-size: clamp(13px, 3.4vw, 15px);
+  line-height: 1.35;
+}
+.hero-keyboard-callout .kb-text strong {
+  display: block;
+  color: var(--accent);
+  font-size: clamp(15px, 4vw, 17px);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  margin-bottom: 2px;
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(220,38,38,0.15), transparent 50%);
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(245,158,11,0.18);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  border: 1px solid rgba(245,158,11,0.3);
+}
+.hero h1 {
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.hero h1 .highlight { color: var(--accent); }
+.hero-sub {
+  font-size: clamp(15px, 4vw, 18px);
+  color: #d4d4d8;
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+.hero-video {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 28px;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 2px rgba(245,158,11,0.3);
+  background: #000;
+  aspect-ratio: 480/864;
+  outline: none;
+}
+.hero-video::-webkit-media-controls-panel { background: linear-gradient(transparent, rgba(0,0,0,0.6)); }
+
+/* CTA BUTTON */
+.cta-btn {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(220,38,38,0.35);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  letter-spacing: 0.01em;
+  width: 100%;
+  max-width: 420px;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(220,38,38,0.45); background: var(--primary-dark); }
+.cta-btn:active { transform: translateY(0); }
+.cta-meta {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #a1a1aa;
+}
+.hero .cta-meta { color: #d4d4d8; }
+
+/* SECTIONS */
+section { padding: 56px 0; }
+section.alt { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-title {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.section-sub {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: clamp(15px, 3.5vw, 17px);
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+
+/* PROMESSA */
+.promise-list {
+  display: grid;
+  gap: 16px;
+  max-width: 540px;
+  margin: 0 auto;
+}
+.promise-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.promise-item .check {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  background: var(--success);
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+/* DIFERENCIAIS */
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .features-grid { grid-template-columns: 1fr 1fr; }
+}
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.feature-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  display: block;
+}
+.feature-title { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+.feature-desc { color: var(--text-soft); font-size: 14px; line-height: 1.5; }
+
+/* MÓDULOS */
+.modules-list {
+  max-width: 580px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+.module-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.module-num {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 16px;
+}
+.module-content h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.module-content p { color: var(--text-soft); font-size: 14px; }
+
+/* PARA QUEM É */
+.audience-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .audience-grid { grid-template-columns: 1fr 1fr; }
+}
+.audience-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+.audience-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.audience-card.is-yes h3 { color: var(--success); }
+.audience-card.is-no h3 { color: var(--text-soft); }
+.audience-list { list-style: none; display: grid; gap: 10px; }
+.audience-list li { font-size: 15px; padding-left: 24px; position: relative; }
+.audience-list li::before {
+  position: absolute; left: 0; top: 0;
+  font-weight: 700;
+}
+.is-yes .audience-list li::before { content: "✓"; color: var(--success); }
+.is-no .audience-list li::before { content: "✗"; color: #a1a1aa; }
+
+/* BÔNUS */
+.bonus-card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--accent), #ea580c);
+  color: #fff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.bonus-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.25);
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+.bonus-card h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; line-height: 1.25; }
+.bonus-card p { font-size: 15px; opacity: 0.95; }
+
+/* GARANTIA */
+.guarantee {
+  max-width: 540px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 2px solid var(--success);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+}
+.guarantee-seal {
+  display: inline-block;
+  background: var(--success);
+  color: #fff;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+.guarantee h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+.guarantee p { color: var(--text-soft); font-size: 15px; }
+
+/* PRICING */
+.pricing-card {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 2px solid var(--primary);
+  border-radius: 20px;
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.pricing-tag {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.price-from { color: var(--text-soft); font-size: 15px; margin-bottom: 6px; }
+.price-old { text-decoration: line-through; color: #a1a1aa; font-size: 18px; margin-bottom: 4px; }
+.price-current { font-size: 52px; font-weight: 800; color: var(--text); line-height: 1; }
+.price-current .currency { font-size: 28px; font-weight: 700; vertical-align: top; margin-right: 4px; }
+.price-current .cents { font-size: 28px; vertical-align: top; }
+.price-installments { color: var(--text-soft); font-size: 15px; margin: 8px 0 24px; }
+.price-installments strong { color: var(--text); }
+.payment-methods { color: var(--text-soft); font-size: 13px; margin-top: 14px; }
+
+/* SEÇÃO "VEJA O CURSO POR DENTRO" — galeria de screenshots */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+@media (min-width: 720px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .gallery-item.is-wide { grid-column: span 2; }
+}
+.gallery-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.gallery-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #18181b;
+  aspect-ratio: 16/8;
+  object-fit: cover;
+  object-position: top;
+}
+.gallery-caption { padding: 16px 18px 18px; }
+.gallery-caption h4 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gallery-caption h4 .badge {
+  background: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+.gallery-caption p {
+  font-size: 14px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+/* SEÇÃO "QUEM É RAFAEL" */
+.about-creator {
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+}
+@media (min-width: 600px) {
+  .about-creator { grid-template-columns: 200px 1fr; }
+}
+.creator-photo {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--bg-card);
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+  display: block;
+}
+.creator-content h3 {
+  font-size: clamp(20px, 5vw, 24px);
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.creator-content .creator-role {
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.creator-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+}
+.creator-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.creator-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+.creator-stat strong { display: block; font-size: 22px; font-weight: 800; color: var(--primary); }
+.creator-stat span { font-size: 12px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* PRODUTO NO BÔNUS DESCONTO */
+.bonus-product-img {
+  display: block;
+  max-width: 200px;
+  width: 100%;
+  margin: 14px auto 4px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(120,53,15,0.25);
+}
+
+/* BÔNUS DESCONTO — destaque do crédito que volta no Corvino */
+.bonus-discount-card {
+  max-width: 520px;
+  margin: 32px auto 0;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 18px;
+  padding: 28px 24px 24px;
+  position: relative;
+  box-shadow: 0 8px 28px rgba(245,158,11,0.25);
+}
+.bonus-discount-badge {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #ea580c, #dc2626);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(220,38,38,0.35);
+}
+.bonus-discount-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.bonus-discount-icon {
+  font-size: 42px;
+  flex-shrink: 0;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+.bonus-discount-text { flex: 1; }
+.bonus-discount-title {
+  font-size: clamp(16px, 4.2vw, 19px);
+  font-weight: 800;
+  color: #78350f;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+.bonus-discount-desc {
+  font-size: clamp(14px, 3.6vw, 15.5px);
+  color: #451a03;
+  line-height: 1.5;
+}
+.bonus-discount-desc strong { color: #92400e; font-weight: 800; }
+.bonus-discount-zero {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1.5px dashed #f59e0b;
+  font-size: clamp(15px, 4vw, 17px);
+  font-weight: 800;
+  color: var(--success);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.bonus-discount-zero::before { content: "🛡️ "; }
+
+/* FAQ */
+.faq-list { max-width: 640px; margin: 0 auto; }
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 18px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-family: inherit;
+}
+.faq-question::after {
+  content: "+";
+  font-size: 24px;
+  color: var(--primary);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.faq-item.is-open .faq-question::after { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s, padding 0.3s;
+  padding: 0 20px;
+  color: var(--text-soft);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.faq-item.is-open .faq-answer { max-height: 320px; padding: 0 20px 20px; }
+
+/* FOOTER */
+footer {
+  background: var(--bg-dark);
+  color: #a1a1aa;
+  padding: 40px 0 24px;
+  text-align: center;
+  font-size: 13px;
+}
+footer p { margin-bottom: 6px; }
+footer a { color: #d4d4d8; }
+
+/* STICKY CTA MOBILE */
+.sticky-cta {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  z-index: 50;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sticky-cta-info { flex: 1; min-width: 0; }
+.sticky-cta-info .from { font-size: 11px; color: var(--text-soft); }
+.sticky-cta-info .price { font-size: 18px; font-weight: 800; color: var(--text); }
+.sticky-cta-info .price .small { font-size: 13px; font-weight: 600; color: var(--text-soft); }
+.sticky-cta .cta-btn {
+  flex-shrink: 0;
+  width: auto;
+  padding: 14px 22px;
+  font-size: 15px;
+}
+@media (min-width: 720px) {
+  .sticky-cta { display: none; }
+  body { padding-bottom: 0; }
+}
+
+/* WHATSAPP FLOAT */
+.wa-float {
+  position: fixed;
+  bottom: 92px; right: 16px;
+  background: #25d366;
+  color: #fff;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+  z-index: 49;
+  transition: transform 0.2s;
+}
+.wa-float:hover { transform: scale(1.08); }
+@media (min-width: 720px) {
+  .wa-float { bottom: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- FAIXA DE DESTAQUE — DIFERENCIAL PRINCIPAL -->
+<div class="top-banner">
+  <div class="top-banner-inner">
+    <span class="top-banner-tag">
+      <span class="top-banner-pulse"></span>
+      EXCLUSIVO
+    </span>
+    <span class="top-banner-text">
+      <strong>SEM ACORDEON? SEM PROBLEMA.</strong>
+      <span class="sep">·</span>
+      Use o teclado do PC ou notebook
+    </span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <video class="hero-logo" autoplay loop muted playsinline preload="metadata" poster="assets/img/corvo_logo_header_575x230.png" aria-label="Corvino Acordeon MIDI">
+      <source src="assets/video/corvo_logo_animado.mp4" type="video/mp4">
+    </video>
+    <div class="hero-keyboard-callout">
+      <span class="kb-icon">⌨️</span>
+      <div class="kb-text">
+        <strong>Sem acordeon? Sem problema.</strong>
+        Use o teclado do seu computador ou notebook
+      </div>
+    </div>
+    <h1>Descubra se você dá conta de tocar acordeon <span class="highlight">em 2 dias</span></h1>
+    <p class="hero-sub">Antes de gastar uma grana num instrumento, teste o método pelo teclado do seu computador. Em 48 horas você toca uma valsa e sabe se nasceu pra isso.</p>
+
+    <video class="hero-video" controls preload="metadata" playsinline poster="assets/img/apresentacao-poster.jpg" aria-label="Vídeo de apresentação do Curso Corvino Light">
+      <source src="assets/video/apresentacao.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo HTML5.
+    </video>
+
+    <a href="#comprar" class="cta-btn" onclick="trackCTA('hero')">QUERO TESTAR POR R$ 97</a>
+    <p class="cta-meta">12x de R$ 9,98 sem juros · acesso imediato · sem precisar de acordeon</p>
+  </div>
+</section>
+
+<!-- PROMESSA -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Pra quem ainda não tem acordeon</h2>
+    <p class="section-sub">Esse curso é o teste-drive zero risco antes de você investir num instrumento.</p>
+
+    <div class="promise-list">
+      <div class="promise-item"><span class="check">✓</span> Tocar uma valsa completa em 2 dias</div>
+      <div class="promise-item"><span class="check">✓</span> Saber se você nasceu pra tocar — antes de comprar acordeon</div>
+      <div class="promise-item"><span class="check">✓</span> Tocar pelo teclado do PC (não precisa de instrumento nenhum)</div>
+      <div class="promise-item"><span class="check">✓</span> Aprender sem precisar ler partitura</div>
+      <div class="promise-item"><span class="check">✓</span> Decidir com a mão, não com a cabeça, se vale comprar acordeon</div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Por que esse método funciona</h2>
+    <p class="section-sub">Diferente de qualquer vídeo grátis ou aula tradicional. O curso é um aplicativo interativo que toca, escuta e te corrige.</p>
+
+    <div class="features-grid">
+      <div class="feature-card" style="border-color: var(--primary); background: linear-gradient(180deg, #fff 0%, #fef2f2 100%);">
+        <span class="feature-icon">⌨️</span>
+        <h3 class="feature-title">Não precisa de acordeon</h3>
+        <p class="feature-desc">Teclado do computador vira acordeon. Toque a valsa completa pelo PC — antes de gastar com instrumento.</p>
+      </div>
+      <div class="feature-card" style="border-color: var(--accent); background: linear-gradient(180deg, #fff 0%, #fffbeb 100%);">
+        <span class="feature-icon">🪗</span>
+        <h3 class="feature-title">Acordeon virtual visual</h3>
+        <p class="feature-desc">Toca pelo teclado e vê o acordeon virtual respondendo do lado — botões e teclas iluminando como se fosse o instrumento real.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎵</span>
+        <h3 class="feature-title">A partitura toca junto</h3>
+        <p class="feature-desc">Você ouve e vê exatamente como deve soar. Não precisa adivinhar.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3 class="feature-title">Vê o erro em tempo real</h3>
+        <p class="feature-desc">Errou uma nota? O curso mostra na hora qual foi. Sem dúvida, sem treinar errado.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎮</span>
+        <h3 class="feature-title">Modo Synthesia</h3>
+        <p class="feature-desc">Não sabe ler partitura? Use o modo gamificado e comece a tocar imediatamente.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌈</span>
+        <h3 class="feature-title">Dedilhado colorido</h3>
+        <p class="feature-desc">Cada nota com sua cor. Aprendizado visual que entra na cabeça e nas mãos juntas.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">✋</span>
+        <h3 class="feature-title">Mão direita, esquerda ou ambas</h3>
+        <p class="feature-desc">Treine cada mão separada e junte quando estiver pronto. Sem atropelar o aprendizado.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3 class="feature-title">Velocidade ajustável</h3>
+        <p class="feature-desc">Comece devagar pra entender. Acelere quando dominar. O ritmo é o seu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VEJA O CURSO POR DENTRO -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Veja o curso por dentro</h2>
+    <p class="section-sub">Telas reais do método. Cada aula tem o app Corvino do lado pra você praticar enquanto aprende.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item is-wide">
+        <img src="assets/img/screenshots/synthesia-mode.png" alt="Modo Synthesia com cursor amarelo guiando as duas mãos" loading="lazy">
+        <div class="gallery-caption">
+          <h4>🎮 Modo Synthesia <span class="badge">EXCLUSIVO</span></h4>
+          <p>Cursor amarelo te guia em tempo real. As duas claves (Sol e Fá) com notas verdes ativas, dedilhado e baixos sincronizados — você só toca quando o cursor passar.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="assets/img/screenshots/teclado-mapa.png" alt="Mapa colorido do teclado do computador" loading="lazy">
+        <div class="gallery-caption">
+          <h4>⌨️ Mapa do teclado do PC</h4>
+          <p>Cada cor mostra qual parte do teclado você toca. Vermelho/azul/verde/roxo pra mão esquerda do acordeon, amarelo pra mão direita.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="assets/img/screenshots/partitura-colorida.png" alt="Partitura colorida com dedilhado e BPM ajustável" loading="lazy">
+        <div class="gallery-caption">
+          <h4>🌈 Partitura colorida + dedilhado</h4>
+          <p>Cada nota com sua cor (Boomwhackers) e o número do dedo embaixo. BPM ajustável: comece devagar, acelere quando dominar.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="assets/img/screenshots/exercicio-bum-tchim.png" alt="Exercício de baixo e acorde — bum-tchim-tchim da valsa" loading="lazy">
+        <div class="gallery-caption">
+          <h4>🎵 Exercícios visuais progressivos</h4>
+          <p>O famoso "bum-tchim-tchim" da valsa visualizado em compassos. Pratique mão direita, esquerda ou as duas juntas.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="assets/img/screenshots/aula-boas-vindas.png" alt="Aula 1 - Boas-vindas com app Corvino integrado" loading="lazy">
+        <div class="gallery-caption">
+          <h4>🪗 Acordeon virtual do lado</h4>
+          <p>Em toda aula, do lado direito, fica o acordeon virtual. Toca pelo teclado e vê os botões e teclas respondendo — como se fosse o Corvino de verdade na sua frente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULOS -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">O que você vai aprender</h2>
+    <p class="section-sub">22 aulas distribuídas em 4 módulos, do zero até a primeira valsa.</p>
+
+    <div class="modules-list">
+      <div class="module-item">
+        <div class="module-num">1</div>
+        <div class="module-content">
+          <h3>Boas-vindas (3 aulas)</h3>
+          <p>Apresentação do método e como tirar o máximo do curso.</p>
+        </div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">2</div>
+        <div class="module-content">
+          <h3>Conhecendo o Corvino Acordeon (4 aulas)</h3>
+          <p>Como conectar, configurar e usar todos os recursos do instrumento.</p>
+        </div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">3</div>
+        <div class="module-content">
+          <h3>Noções musicais (8 aulas)</h3>
+          <p>Notas, ritmo, leitura de partitura — explicado do jeito mais simples possível.</p>
+        </div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">4</div>
+        <div class="module-content">
+          <h3>Primeira valsa (6 aulas)</h3>
+          <p>Aplicação prática: você toca uma valsa completa do início ao fim.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Esse curso é pra você?</h2>
+    <p class="section-sub">Veja se faz sentido pro seu momento.</p>
+
+    <div class="audience-grid">
+      <div class="audience-card is-yes">
+        <h3>É pra você se:</h3>
+        <ul class="audience-list">
+          <li>Sempre quis aprender acordeon mas tem medo de não dar conta</li>
+          <li>Tá pensando em comprar um acordeon e não quer arriscar</li>
+          <li>Ainda não tem o instrumento e quer testar antes</li>
+          <li>Quer descobrir se nasceu pra isso, no seu ritmo</li>
+          <li>Quer sentir o prazer de tocar uma simples valsa</li>
+          <li>Já tentou YouTube e ficou perdido sem saber se evoluía</li>
+          <li>Já tem o Corvino Acordeon e quer um método guiado</li>
+        </ul>
+      </div>
+      <div class="audience-card is-no">
+        <h3>Não é pra você se:</h3>
+        <ul class="audience-list">
+          <li>Já é acordeonista e quer só repertório avançado</li>
+          <li>Quer aprender só acordeon a fole tradicional</li>
+          <li>Não pode dedicar 30 min por dia</li>
+          <li>Espera virar profissional em 1 semana</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÔNUS -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Bônus exclusivo</h2>
+    <p class="section-sub">Reservado pra quem leva o curso a sério.</p>
+
+    <div class="bonus-card">
+      <span class="bonus-tag">BÔNUS LIBERADO</span>
+      <h3>+ 3 valsas extras quando você concluir o curso</h3>
+      <p>Grave um vídeo de 30 segundos tocando a Valsa Corvino, mande no WhatsApp, e em até 48h libero 3 valsas extras direto no seu acesso. De graça, só pra alunos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GARANTIA -->
+<section class="alt">
+  <div class="container">
+    <div class="guarantee">
+      <span class="guarantee-seal">7</span>
+      <h3>Garantia incondicional de 7 dias</h3>
+      <p>Compre, teste o método por 7 dias. Se por qualquer motivo não for pra você, devolvo 100% do valor. Sem perguntas, sem burocracia. O risco é meu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="comprar">
+  <div class="container">
+    <h2 class="section-title">Comece hoje</h2>
+    <p class="section-sub">Pagamento único. Acesso imediato. Sem mensalidade.</p>
+
+    <div class="pricing-card">
+      <span class="pricing-tag">CURSO LIGHT</span>
+      <p class="price-from">de <span style="text-decoration: line-through;">R$ 297</span> por apenas</p>
+      <div class="price-current">
+        <span class="currency">R$</span>97<span class="cents">,00</span>
+      </div>
+      <p class="price-installments">ou <strong>12x de R$ 9,98</strong> sem juros</p>
+
+      <a href="#" id="btn-comprar" class="cta-btn" onclick="trackCTA('pricing'); return true;">QUERO COMEÇAR AGORA</a>
+
+      <p class="payment-methods">💳 Cartão · ⚡ PIX · 📄 Boleto<br>Acesso imediato após o pagamento</p>
+    </div>
+
+    <div class="bonus-discount-card">
+      <span class="bonus-discount-badge">🎁 DESCONTO GARANTIDO</span>
+      <div class="bonus-discount-row">
+        <span class="bonus-discount-icon">💰</span>
+        <div class="bonus-discount-text">
+          <p class="bonus-discount-title">Os R$ 97 voltam pra você</p>
+          <p class="bonus-discount-desc">Se depois de fazer o curso você decidir comprar o <strong>Corvino Acordeon</strong>, os <strong>R$ 97 viram desconto direto no instrumento</strong>.</p>
+        </div>
+      </div>
+      <img src="assets/img/rc2-completo.jpg" alt="Corvino Acordeon MIDI" class="bonus-product-img">
+      <span class="bonus-discount-zero">O risco é ZERO</span>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Perguntas frequentes</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">Preciso ter um acordeon pra fazer o curso?</button>
+        <div class="faq-answer"><p><strong>NÃO precisa.</strong> O curso tem uma personalização única que faz o teclado do seu computador ou notebook virar um acordeon — você toca a valsa inteira pelo PC. É exatamente esse o ponto: você descobre se nasceu pra tocar antes de investir num instrumento. Se já tem o Corvino Acordeon, melhor ainda — conecta o cabo USB e usa direto. (O curso é otimizado pra Corvino Acordeon MIDI ou teclado do computador.)</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Funciona no celular?</button>
+        <div class="faq-answer"><p>O curso roda em qualquer navegador moderno (Chrome, Edge, Firefox). Pra usar o instrumento conectado por MIDI, recomendo computador ou notebook. Pelo celular você consegue assistir e estudar a teoria.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Em quanto tempo eu toco a primeira valsa?</button>
+        <div class="faq-answer"><p>Em 2 dias seguindo o método na sequência. Não é promessa furada — é o resultado real de quem segue as 22 aulas na ordem proposta. O modo Synthesia acelera o início pra quem nunca tocou.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">E se eu nunca toquei nada na vida?</button>
+        <div class="faq-answer"><p>O curso foi feito pra começar do zero absoluto. Se você sabe distinguir as notas (Dó, Ré, Mi…), o resto o método ensina. Não precisa saber ler partitura — usa o modo Synthesia até ganhar confiança.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Por quanto tempo tenho acesso?</button>
+        <div class="faq-answer"><p>Acesso vitalício. Pagou uma vez, é seu pra sempre. Sem mensalidade, sem renovação.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">E se eu não gostar?</button>
+        <div class="faq-answer"><p>Tem 7 dias pra testar. Se não for pra você, peço reembolso total — sem perguntas, sem julgar. Direito do consumidor + minha garantia.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Como funciona o bônus das 3 valsas?</button>
+        <div class="faq-answer"><p>Quando você concluir o curso, grave um vídeo de 30s tocando a Valsa Corvino e mande no meu WhatsApp. Em até 48h libero 3 valsas extras direto no seu painel de aluno. É um agradecimento por levar o método a sério.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUEM É RAFAEL -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Quem criou esse método</h2>
+    <p class="section-sub">Atrás do Corvino tem um inventor brasileiro que fez do zero o instrumento e o curso.</p>
+
+    <div class="about-creator">
+      <img src="assets/img/rafael-corvino.jpg" alt="Rafael Corvino" class="creator-photo">
+      <div class="creator-content">
+        <h3>Rafael Corvino</h3>
+        <div class="creator-role">Criador do Corvino Acordeon MIDI</div>
+        <p>Piloto agrícola por profissão, inventor por vocação. Criou <strong>dois pioneirismos mundiais</strong>:</p>
+        <ul style="list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px;">
+          <li style="background: var(--bg-card); border-left: 4px solid var(--primary); padding: 10px 14px; border-radius: 6px; font-size: 14.5px; line-height: 1.4;">
+            🥇 <strong>1º acordeon MIDI sem fole do MUNDO</strong> — leve (1,6 kg), portátil, silencioso pra estudo.
+          </li>
+          <li style="background: var(--bg-card); border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 6px; font-size: 14.5px; line-height: 1.4;">
+            🥇 <strong>1º curso de acordeon do MUNDO com modo Synthesia</strong> — exclusividade Corvino.
+          </li>
+        </ul>
+        <p>O método foi pensado pra esse instrumento específico, baseado no clássico de Mario Mascarenhas adaptado pra quem aprende sozinho em casa.</p>
+        <div class="creator-stats">
+          <div class="creator-stat">
+            <strong>180+</strong>
+            <span>Corvino Acordeon vendidos</span>
+          </div>
+          <div class="creator-stat">
+            <strong>22</strong>
+            <span>Aulas no curso Light</span>
+          </div>
+          <div class="creator-stat">
+            <strong>1,6 kg</strong>
+            <span>Peso do instrumento</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="alt">
+  <div class="container" style="text-align: center;">
+    <h2 class="section-title">Pronto pra tocar?</h2>
+    <p class="section-sub">Em 2 dias você toca sua primeira valsa. Em 7 dias você decide se vale ou pede reembolso.</p>
+    <a href="#comprar" class="cta-btn" onclick="trackCTA('footer')">COMEÇAR AGORA POR R$ 97</a>
+    <p class="cta-meta" style="color: var(--text-soft);">12x de R$ 9,98 · acesso imediato · garantia 7 dias</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p><strong style="color:#fff;">Curso Corvino Light</strong></p>
+    <p>Método criado por Rafael Corvino · Botucatu/SP</p>
+    <p>Dúvidas? <a href="https://wa.me/5514997456913">WhatsApp (14) 99745-6913</a></p>
+    <p style="margin-top: 14px; font-size: 11px;">© 2026 Corvino Acordeon MIDI · Todos os direitos reservados</p>
+  </div>
+</footer>
+
+<!-- STICKY CTA MOBILE -->
+<div class="sticky-cta">
+  <div class="sticky-cta-info">
+    <div class="from">12x de R$ 9,98</div>
+    <div class="price">R$ 97<span class="small">,00</span></div>
+  </div>
+  <a href="#comprar" class="cta-btn" onclick="trackCTA('sticky')">COMPRAR</a>
+</div>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/5514997456913?text=Oi%20Rafael%2C%20quero%20saber%20mais%20sobre%20o%20Curso%20Corvino%20Light" class="wa-float" aria-label="WhatsApp" target="_blank">
+  💬
+</a>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.parentElement.classList.toggle('is-open');
+  });
+});
+
+// CTA tracking — pluga aqui Pixel/GA4 quando estiver configurado
+function trackCTA(local) {
+  // if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', {content_name: 'Curso Light', value: 97, currency: 'BRL'});
+  // if (typeof gtag !== 'undefined') gtag('event', 'begin_checkout', {value: 97, currency: 'BRL'});
+  console.log('CTA clicked:', local);
+}
+
+// Botão "Comprar" — substituir pelo Hotlink Hotmart quando o produto estiver criado
+document.getElementById('btn-comprar').addEventListener('click', function(e) {
+  e.preventDefault();
+  // SUBSTITUIR PELA URL HOTMART:
+  // window.location.href = 'https://pay.hotmart.com/SEU_PRODUTO';
+  alert('Aguardando integração Hotmart.\n\nQuando você criar o produto na Hotmart, me mande o Hotlink que eu pluga aqui.');
+});
+</script>
+
+</body>
+</html>
