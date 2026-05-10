@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/assets/img/corvo_logo_completo.png</image:loc>
+      <image:title>Logo Corvino Acordeon MIDI</image:title>
+      <image:caption>1º acordeon MIDI sem fole do mundo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/assets/img/rc2-completo.jpg</image:loc>
+      <image:title>Corvino Acordeon RC2</image:title>
+      <image:caption>Acordeon MIDI portátil, 1.6kg</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/assets/img/screenshots/synthesia-mode.png</image:loc>
+      <image:title>Modo Synthesia</image:title>
+      <image:caption>1º curso de acordeon do mundo com Modo Synthesia</image:caption>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/assets/img/apresentacao-poster.jpg</video:thumbnail_loc>
+      <video:title>Apresentação do Curso Corvino Light</video:title>
+      <video:description>Conheça o método interativo de acordeon do Corvino. Aprenda em 2 dias pelo teclado do PC.</video:description>
+      <video:content_loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/assets/video/apresentacao.mp4</video:content_loc>
+      <video:duration>130</video:duration>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+
+  <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/links/</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/aulas/aula-01-boas-vindas.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/aulas/aula-tocando-no-peito.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
