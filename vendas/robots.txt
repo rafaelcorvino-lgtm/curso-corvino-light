@@ -1,0 +1,8 @@
+# Robots.txt — Curso Corvino Light
+# https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://rafaelcorvino-lgtm.github.io/curso-corvino-light/vendas/sitemap.xml
