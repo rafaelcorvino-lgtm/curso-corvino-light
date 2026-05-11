@@ -203,14 +203,34 @@ fbq('track', 'PageView');
 </script>
 -->
 
-<!-- GOOGLE TAG (GA4) — substituir SEU_GA_ID -->
-<!--
-<script async src="https://www.googletagmanager.com/gtag/js?id=SEU_GA_ID"></script>
+<!-- GOOGLE ANALYTICS 4 — Corvino Acordeon -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5MGYTLKJZB"></script>
 <script>
-window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());gtag('config','SEU_GA_ID');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-5MGYTLKJZB', {
+  'page_title': 'Curso Corvino Light - Página de Vendas',
+  'page_location': window.location.href
+});
+
+// Rastreia cliques nos CTAs de compra → vira "evento de conversão" no GA4
+function trackCTA(local) {
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'begin_checkout', {
+      'currency': 'BRL',
+      'value': 97.00,
+      'items': [{
+        'item_id': 'curso-corvino-light',
+        'item_name': 'Curso Corvino Light',
+        'price': 97.00,
+        'quantity': 1
+      }],
+      'cta_location': local
+    });
+  }
+}
 </script>
--->
 
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1392,14 +1412,8 @@ document.querySelectorAll('.faq-question').forEach(btn => {
   });
 });
 
-// CTA tracking — pluga aqui Pixel/GA4 quando estiver configurado
-function trackCTA(local) {
-  // if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', {content_name: 'Curso Light', value: 97, currency: 'BRL'});
-  // if (typeof gtag !== 'undefined') gtag('event', 'begin_checkout', {value: 97, currency: 'BRL'});
-  console.log('CTA clicked:', local);
-}
-
-// Botão "Comprar" — Hotlink Hotmart integrado
+// CTA tracking — função trackCTA() está definida no <head> com GA4 begin_checkout event
+// Botão "Comprar" — Hotlink Hotmart integrado nos href dos CTAs
 // (links já configurados em href, JS aqui só pra eventos de tracking)
 </script>
 
