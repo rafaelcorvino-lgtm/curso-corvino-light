@@ -707,8 +707,12 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     // Limpa registro de teclas pressionadas (allOff abaixo desliga som).
     pressedKeys.clear();
     postToApp({ type: 'corvino:allOff' });
-    // Restaura kbd direto da iframe ao estado anterior (que ficou salvo no start)
-    postToApp({ type: 'corvino:setKbdEnabled', restore: true });
+    // Após parar Synthesia, deixa kbd do iframe LIGADO (não restaura).
+    // Aluno estava tocando pelo teclado durante o jogo (via keyForward
+    // capture phase) — se a gente "restaurasse" pro estado anterior
+    // (default = off, porque o aluno raramente clica em ⌨️ explicitamente),
+    // a sensação é que o teclado "parou" depois do Synthesia.
+    postToApp({ type: 'corvino:setKbdEnabled', value: true });
     triggerBtn.classList.remove('playing', 'count-in');
     cursor.style.display = 'none';
     ball.style.display = 'none';
@@ -991,6 +995,11 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     dlog('keydown code=', e.code, 'midi=', midi, 'isBass=', isBass,
       'running=', running, 'waiting=', waiting);
     if (midi == null) return;
+    // Synthesia parado: NÃO interfere. O iframe (keyboard-input.js)
+    // que cuida do som direto. Sem flashBtn, sem preventDefault, sem
+    // handleHit — só ignora o evento. (Antes piscava o botão Synthesia
+    // a cada tecla mesmo após parar a peça.)
+    if (!running) return;
     if (e.repeat) { e.preventDefault(); return; }
     e.preventDefault();
     // Já registrada como pressionada? Ignora (evita noteOn duplicado se
