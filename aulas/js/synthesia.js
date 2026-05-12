@@ -1544,3 +1544,65 @@ if (typeof window !== 'undefined' && !window.__corvinoSynthSpaceShortcut) {
     target.click();
   }, true);
 }
+
+// ===== Teclado global do CURSO → som via iframe =====
+// Bug que isso resolve: aluno aperta Espaço pra pausar Synthesia (foco
+// fica no curso, fora do iframe). Tenta tocar tecla — nada acontece,
+// porque keydown nativo do iframe só dispara se o iframe tem foco.
+// Aluno tinha que clicar no iframe pra "voltar" o teclado.
+//
+// Solução: enquanto a página da aula está aberta, qualquer keydown no
+// curso (parent) que mapeie pra uma nota do Corvino dispara noteOn no
+// iframe via postMessage. Singleton — instala 1 listener mesmo com
+// vários attachSynthesia. Não interfere quando algum Synthesia tá
+// rodando (o onKey interno do synthesia cuida) nem em INPUT/TEXTAREA.
+if (typeof window !== 'undefined' && !window.__corvinoSynthGlobalKbd) {
+  window.__corvinoSynthGlobalKbd = true;
+  const globalPressed = new Map(); // code → { midi, isBass }
+
+  function postNoteOnIframe(msg) {
+    const frame = document.querySelector('iframe.app-frame');
+    if (frame && frame.contentWindow) frame.contentWindow.postMessage(msg, '*');
+  }
+
+  function anySynthActive() {
+    return !!document.querySelector('.synth-trigger.playing, .synth-trigger.count-in');
+  }
+
+  function isTypingTarget(tg) {
+    if (!tg) return false;
+    const tag = (tg.tagName || '').toUpperCase();
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tg.isContentEditable;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+    if (isTypingTarget(e.target)) return;
+    if (anySynthActive()) return; // Synthesia ativo cuida
+    const mdMidi = keyCodeToMidi(e.code);
+    const bassMidi = keyCodeToBassMidi(e.code);
+    const midi = mdMidi != null ? mdMidi : bassMidi;
+    if (midi == null) return;
+    const isBass = mdMidi == null && bassMidi != null;
+    if (globalPressed.has(e.code)) return;
+    globalPressed.set(e.code, { midi, isBass });
+    postNoteOnIframe({ type: 'corvino:noteOn', midi, isBass, velocity: 100 });
+  }, true);
+
+  document.addEventListener('keyup', (e) => {
+    const pressed = globalPressed.get(e.code);
+    if (!pressed) return;
+    globalPressed.delete(e.code);
+    postNoteOnIframe({ type: 'corvino:noteOff', midi: pressed.midi, isBass: pressed.isBass });
+  }, true);
+
+  // Solta tudo se a janela perde foco (alt-tab etc.) pra evitar nota
+  // "presa" tocando indefinidamente.
+  window.addEventListener('blur', () => {
+    if (globalPressed.size === 0) return;
+    for (const { midi, isBass } of globalPressed.values()) {
+      postNoteOnIframe({ type: 'corvino:noteOff', midi, isBass });
+    }
+    globalPressed.clear();
+  });
+}
