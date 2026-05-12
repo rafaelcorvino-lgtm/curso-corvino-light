@@ -5,6 +5,7 @@
 //   { type: 'corvino:noteOn',  midi: 48, isBass: false, velocity: 100 }
 //   { type: 'corvino:noteOff', midi: 48, isBass: false }
 //   { type: 'corvino:allOff' }            // solta todas as notas ativas
+//   { type: 'corvino:resume' }            // desbloqueia AudioContext suspenso
 //   { type: 'corvino:ping' }              // handshake; responde { type: 'corvino:pong' }
 //
 // A aula hospedeira responde a 'corvino:pong' pra saber que o engine está
@@ -27,7 +28,22 @@ function onMessage(ev) {
       case 'corvino:ping':
         ev.source?.postMessage({ type: 'corvino:pong' }, '*');
         break;
+      case 'corvino:resume':
+        // Aluno pode disparar Synthesia via Space no parent (atalho global)
+        // SEM nunca ter clicado no iframe. 2 cenários a defender:
+        //   (a) AudioContext em estado 'suspended' → resume() destranca
+        //   (b) Canais MIDI descalibrados (programSelect perdeu efeito) →
+        //       ensureChannelsReady() reatribui SF aos canais como faz
+        //       setTimbre. Reproduz o "fix" que o aluno faz manualmente
+        //       trocando de timbre.
+        audio.resume();
+        audio.ensureChannelsReady();
+        break;
       case 'corvino:noteOn': {
+        // Defensivo: garante resume antes de cada noteOn. HOT PATH manteve-se
+        // sem resume por performance (ver audio-engine.js noteOn), mas aqui
+        // estamos numa borda externa onde vale a tentativa.
+        audio.resume();
         const vel = typeof d.velocity === 'number' ? d.velocity : 100;
         audio.noteOn(d.midi, vel, !!d.isBass);
         // Feedback visual nas próprias teclas do app também

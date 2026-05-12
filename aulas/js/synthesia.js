@@ -644,6 +644,11 @@ export function attachSynthesia({ triggerBtnId, bpm = 60, beatsPerBar = 0, notes
     // som duplicado (iframe tocaria + Synthesia também via postToApp).
     // O iframe salva o estado atual e restaura no stop.
     postToApp({ type: 'corvino:setKbdEnabled', value: false, save: true });
+    // Tenta desbloquear AudioContext do iframe ANTES da 1ª nota. Aluno
+    // que entra na aula e dispara Synthesia via Space (atalho global)
+    // sem nunca ter interagido com o iframe terminava com luzes acendendo
+    // mas sem som — porque audioCtx do iframe ficava 'suspended'.
+    postToApp({ type: 'corvino:resume' });
     // BPM ao vivo — lê do controle da toolbar (se existe), senão usa default
     const activeBpm = getCurrentBpm();
     beatMs = 60000 / activeBpm;

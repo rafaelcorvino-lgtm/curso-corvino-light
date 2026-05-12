@@ -271,6 +271,17 @@ export function resume() {
   }
 }
 
+// Pra usar via embed-api (postMessage corvino:resume).
+// Bug observado: aluno aperta Synthesia (no parent, via Space) e luzes
+// acendem mas som não sai. Trocar timbre resolve — porque setTimbre
+// chama assignChannels() que faz midiProgramSelect + forceFastAttack
+// nos 2 canais. Reproduzir essa reatribuição aqui sem precisar
+// recarregar SF (loadTimbreSf2 é caro: re-download do .sf2).
+export function ensureChannelsReady() {
+  if (!synth) return;
+  try { assignChannels(); } catch (e) { console.warn('[audio] ensureChannelsReady:', e); }
+}
+
 export async function setTimbre(timbreId) {
   if (timbreId === currentTimbre) return;
   const timbre = TIMBRES.find(t => t.id === timbreId);
