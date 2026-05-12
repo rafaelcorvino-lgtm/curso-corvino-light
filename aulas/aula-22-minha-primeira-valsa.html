@@ -930,7 +930,15 @@
         { label: 'Variação B',      start: 9,  end: 16, firstNoteId: 'pvd-9'  },
         { label: 'Recapitulação A\'', start: 17, end: 24, firstNoteId: 'pvd-25' },
       ];
-      const SECTION_BPM = 60;
+      // BPM dinâmico: lê o .score-bpm-display da toolbar do score-player
+      // (que o aluno controla via −/+). Fallback 60 se toolbar não existir
+      // ainda (chamada antes do DOM montar) ou se valor parsing falhar.
+      function getCurrentBpm() {
+        const fig = document.getElementById('pvd-svg')?.closest('.score-figure');
+        const display = fig?.querySelector('.score-bpm-display');
+        const n = parseInt(display?.textContent, 10);
+        return Number.isFinite(n) && n > 0 ? n : 60;
+      }
       let activeLoop = null;
 
       function buildSectionNotes(sec) {
@@ -975,6 +983,10 @@
       }
 
       function playFraseSynth(sec, loop) {
+        // IMPORTANTE: capturar BPM ANTES do resetSynthBtn — ele apaga
+        // a toolbar inteira (incluindo .score-bpm-display), então
+        // getCurrentBpm() depois disso volta pro fallback 60.
+        const sectionBpm = getCurrentBpm();
         if (isSynthRunning()) document.getElementById('btn-pvd-syn').click();
         clearLoop();
         resetSynthBtn();
@@ -982,7 +994,7 @@
         // Re-attacha Synthesia com as notas filtradas (no btn limpo)
         attachSynthesia({
           triggerBtnId: 'btn-pvd-syn',
-          bpm: SECTION_BPM,
+          bpm: sectionBpm,
           beatsPerBar: 3,
           notes,
         });
@@ -996,7 +1008,7 @@
         if (loop) {
           const compsCount = sec.end - sec.start + 1;
           const totalBeats = compsCount * 3;
-          const beatMs = 60 / SECTION_BPM * 1000;
+          const beatMs = 60 / sectionBpm * 1000;
           const cycleMs = (3 + totalBeats) * beatMs + 2000;
           activeLoop = { sec, timeoutId: setTimeout(() => playFraseSynth(sec, true), cycleMs) };
           requestAnimationFrame(() => {
@@ -1007,13 +1019,16 @@
       }
 
       function stopAll() {
+        // IMPORTANTE: capturar BPM ANTES do resetSynthBtn (apaga toolbar)
+        const sectionBpm = getCurrentBpm();
         clearLoop();
         if (isSynthRunning()) document.getElementById('btn-pvd-syn').click();
         resetSynthBtn();
         // Restaura peça inteira pro Synthesia funcionar normal depois
+        // (respeita BPM atual do aluno na toolbar)
         attachSynthesia({
           triggerBtnId: 'btn-pvd-syn',
-          bpm: 60,
+          bpm: sectionBpm,
           beatsPerBar: 3,
           notes: ALL_NOTES,
         });
