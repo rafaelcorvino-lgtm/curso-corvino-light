@@ -47,7 +47,7 @@
         botão <strong>🎹</strong> na <strong>barra central do app</strong>
         (ao lado do <strong>🏷️</strong> que mostra os nomes das notas) e use
         <strong>G H J K L Ç ~ ]</strong> pras notas (Dó-Ré-Mi-Fá-Sol-Lá-Si-Dó, oitava completa)
-        e <strong>Q W E R / A S D F / Z X C V / 1 2 3 4</strong> pros baixos. Quando o Corvino
+        e <strong>1 2 3 4 / Q W E R / A S D F</strong> pros baixos. Quando o Corvino
         chegar, volte aqui.
       </div>
 
@@ -81,7 +81,7 @@
       </p>
 
       <figure class="score-figure">
-        <svg viewBox="0 0 560 230" class="score-svg">
+        <svg viewBox="0 0 560 280" class="score-svg">
           <!-- ============================================================
                LINHA 1 — DÍGITOS (1 2 3 4 = fundamentais da ME — layout Mesa)
                ============================================================ -->
@@ -213,29 +213,47 @@
           </g>
 
           <!-- ============================================================
+               LINHA 4 — ZXCVBNM (todas sem função no layout Mesa)
+               Mostradas em cinza pra completar a sombra do teclado físico.
+               ============================================================ -->
+          <g fill="#1f1d20" stroke="#3a3537" stroke-width="1">
+            <rect x="80" y="159" width="36" height="40" rx="4"/>
+            <rect x="120" y="159" width="36" height="40" rx="4"/>
+            <rect x="160" y="159" width="36" height="40" rx="4"/>
+            <rect x="200" y="159" width="36" height="40" rx="4"/>
+            <rect x="240" y="159" width="36" height="40" rx="4"/>
+            <rect x="280" y="159" width="36" height="40" rx="4"/>
+            <rect x="320" y="159" width="36" height="40" rx="4"/>
+          </g>
+          <g font-size="11" text-anchor="middle" fill="#555" font-family="monospace">
+            <text x="98" y="184">Z</text><text x="138" y="184">X</text><text x="178" y="184">C</text><text x="218" y="184">V</text>
+            <text x="258" y="184">B</text><text x="298" y="184">N</text><text x="338" y="184">M</text>
+          </g>
+
+          <!-- ============================================================
                LEGENDA
                ============================================================ -->
           <g font-family="sans-serif" font-size="10">
             <!-- Mão direita -->
-            <text x="20" y="175" font-weight="700" fill="#d4c9a8">🎵 Mão direita:</text>
-            <rect x="120" y="167" width="14" height="10" fill="rgba(218,165,32,0.45)" stroke="var(--gold)"/>
-            <text x="138" y="176" fill="var(--gold)">brancas (Dó-Ré-Mi…)</text>
-            <rect x="270" y="167" width="14" height="10" fill="#2a2025" stroke="#ff9060"/>
-            <text x="288" y="176" fill="#ff9060">pretas (sustenidos #)</text>
+            <text x="20" y="225" font-weight="700" fill="#d4c9a8">🎵 Mão direita:</text>
+            <rect x="120" y="217" width="14" height="10" fill="rgba(218,165,32,0.45)" stroke="var(--gold)"/>
+            <text x="138" y="226" fill="var(--gold)">brancas (Dó-Ré-Mi…)</text>
+            <rect x="270" y="217" width="14" height="10" fill="#2a2025" stroke="#ff9060"/>
+            <text x="288" y="226" fill="#ff9060">pretas (sustenidos #)</text>
 
             <!-- Mão esquerda -->
-            <text x="20" y="198" font-weight="700" fill="#d4c9a8">🎵 Mão esquerda:</text>
-            <rect x="120" y="190" width="14" height="10" fill="rgba(110,160,200,0.35)" stroke="#5a8acc"/>
-            <text x="138" y="199" fill="#a8c8ec">fundamental</text>
-            <rect x="218" y="190" width="14" height="10" fill="rgba(140,200,140,0.35)" stroke="#5ab45a"/>
-            <text x="236" y="199" fill="#90d090">acorde Maior</text>
-            <rect x="318" y="190" width="14" height="10" fill="rgba(200,140,200,0.35)" stroke="#a065a0"/>
-            <text x="336" y="199" fill="#c890c8">acorde menor</text>
+            <text x="20" y="248" font-weight="700" fill="#d4c9a8">🎵 Mão esquerda:</text>
+            <rect x="120" y="240" width="14" height="10" fill="rgba(110,160,200,0.35)" stroke="#5a8acc"/>
+            <text x="138" y="249" fill="#a8c8ec">fundamental</text>
+            <rect x="218" y="240" width="14" height="10" fill="rgba(140,200,140,0.35)" stroke="#5ab45a"/>
+            <text x="236" y="249" fill="#90d090">acorde Maior</text>
+            <rect x="318" y="240" width="14" height="10" fill="rgba(200,140,200,0.35)" stroke="#a065a0"/>
+            <text x="336" y="249" fill="#c890c8">acorde menor</text>
 
             <!-- Sem função -->
-            <text x="20" y="221" font-weight="700" fill="#d4c9a8">⚪ Sem função:</text>
-            <rect x="120" y="213" width="14" height="10" fill="#1f1d20" stroke="#3a3537"/>
-            <text x="138" y="222" fill="#777">teclas livres (5-0, T, I, ], Z-M)</text>
+            <text x="20" y="271" font-weight="700" fill="#d4c9a8">⚪ Sem função:</text>
+            <rect x="120" y="263" width="14" height="10" fill="#1f1d20" stroke="#3a3537"/>
+            <text x="138" y="272" fill="#777">teclas livres (5-0, T, I, ], Z-M)</text>
           </g>
         </svg>
         <figcaption>
