@@ -36,6 +36,32 @@
   </url>
 
   <url>
+    <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/simulador/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/simulador/assets/img/simulador-tela-completa.png</image:loc>
+      <image:title>Simulador Corvino - Tela completa</image:title>
+      <image:caption>Toque acordeon pelo teclado do PC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/simulador/assets/img/simulador-mapa-cores.png</image:loc>
+      <image:title>Mapa colorido das teclas do Simulador</image:title>
+      <image:caption>Cada cor mostra uma função do acordeon</image:caption>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/simulador/assets/img/simulador-modo-peito.png</video:thumbnail_loc>
+      <video:title>Demonstração do Modo Peito - Simulador Corvino</video:title>
+      <video:description>Veja como o Modo Peito do Simulador Corvino reproduz a forma real de tocar acordeon.</video:description>
+      <video:content_loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/simulador/assets/video/modo-peito.mp4</video:content_loc>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+
+  <url>
     <loc>https://rafaelcorvino-lgtm.github.io/curso-corvino-light/links/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
