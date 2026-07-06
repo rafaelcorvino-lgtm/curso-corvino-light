@@ -243,6 +243,30 @@ async function main() {
     console.log('MIDI not available - touch-only mode');
   }
 
+  // Botão Bluetooth: pareia teclado BLE-MIDI (M-VAVE SMK-25, Worlde, etc).
+  // Só faz sentido em navegadores com Web Bluetooth (Chrome/Edge). Em Safari,
+  // Firefox e iOS o botão fica escondido — nesses casos, o aluno pareia pelo
+  // Bluetooth do SO e o teclado aparece como device MIDI normal via Web MIDI.
+  const btBtn = document.getElementById('bt-toggle');
+  if (btBtn) {
+    if (midi.isBluetoothMIDISupported()) {
+      btBtn.addEventListener('click', async () => {
+        btBtn.classList.add('pairing');
+        try {
+          const dev = await midi.connectBluetoothMIDI();
+          btBtn.classList.add('on');
+          btBtn.title = 'Conectado: ' + dev.name;
+        } catch (err) {
+          console.log('[BLE-MIDI] pareamento cancelado ou falhou:', err.message);
+        } finally {
+          btBtn.classList.remove('pairing');
+        }
+      });
+    } else {
+      btBtn.style.display = 'none';
+    }
+  }
+
   setupResizeHandler();
 
   // Double-click fullscreen
