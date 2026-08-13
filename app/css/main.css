@@ -72,6 +72,9 @@ html, body {
   transition: opacity 0.8s ease-out;
 }
 #splash.fade-out { opacity: 0; pointer-events: none; }
+/* Especificidade maior que `html.embedded #splash { display: flex !important }`
+   pra permitir esconder o splash no modo embed via classe .hidden. */
+html #splash.hidden, html.embedded #splash.hidden { display: none !important; }
 #splash-logo { width: min(40vw, 260px); height: auto; object-fit: contain; }
 #splash-text { color: var(--gold); font-size: 1.1rem; font-weight: 600; letter-spacing: 4px; }
 
