@@ -4,16 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baixar o app Corvino Acordeon MIDI</title>
-  <meta name="description" content="Baixe o aplicativo Corvino Acordeon MIDI: acordeon digital com timbres realistas e ritmos brasileiros. Grátis no Google Play.">
+  <meta name="description" content="Baixe o aplicativo Corvino Acordeon MIDI: acordeon digital com timbres realistas e ritmos brasileiros. Grátis no Google Play e App Store.">
   <meta property="og:title" content="Corvino Acordeon MIDI — aplicativo oficial">
-  <meta property="og:description" content="Acordeon digital com timbres realistas e ritmos brasileiros. Grátis.">
+  <meta property="og:description" content="Acordeon digital com timbres realistas e ritmos brasileiros. Grátis no Google Play e App Store.">
   <meta property="og:image" content="https://curso.corvino.com.br/baixar/qr.png">
   <script>
     (function () {
       var ua = navigator.userAgent || '';
       var PLAY = 'https://play.google.com/store/apps/details?id=br.com.corvino.acordeonmidi';
+      var APPSTORE = 'https://apps.apple.com/br/app/corvino/id6529523943';
       if (/Android/i.test(ua) && !/Windows/i.test(ua)) {
         location.replace(PLAY);
+      } else if (/iPhone|iPad|iPod/i.test(ua) && !/Windows/i.test(ua)) {
+        location.replace(APPSTORE);
       }
     })();
   </script>
@@ -60,9 +63,9 @@
         <span><small>Disponível no</small><strong>Google Play</strong></span>
       </a>
 
-      <a class="btn soon" id="btn-ios" href="#" onclick="return false;" title="Versão para iPhone em breve">
+      <a class="btn" href="https://apps.apple.com/br/app/corvino/id6529523943" id="btn-ios">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M16.4 12.7c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.8 1.3 10.3.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.2zM13.9 5c.7-.9 1.2-2.1 1-3.3-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.2 1.2.1 2.4-.6 3.1-1.5z"/></svg>
-        <span><small>iPhone / iPad</small><strong>App Store — em breve</strong></span>
+        <span><small>Disponível na</small><strong>App Store</strong></span>
       </a>
 
       <a class="btn web" href="../app/">
